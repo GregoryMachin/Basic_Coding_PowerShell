@@ -1,0 +1,11 @@
+# Lesson-generated files
+lessons/07-files/workspace/
+lessons/08-errors/workspace/
+lessons/09-data/workspace/
+final-project/data/mission-log.csv
+
+# Editor and operating system files
+.vscode/*.log
+.DS_Store
+Thumbs.db
+

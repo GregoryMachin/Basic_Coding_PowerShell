@@ -1,0 +1,15 @@
+name: Test PowerShell course
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  windows-powershell-51:
+    runs-on: windows-latest
+    steps:
+      - name: Check out course
+        uses: actions/checkout@v4
+      - name: Parse and run course scripts
+        shell: powershell
+        run: .\scripts\Test-Course.ps1

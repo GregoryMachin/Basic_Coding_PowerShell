@@ -1,0 +1,11 @@
+{
+  "updated": "2026-07-14T09:00:00+12:00",
+  "city": "Lumen Bay",
+  "zones": [
+    { "name": "Harbour", "alertLevel": 2, "lead": { "name": "Echo Lantern", "channel": "A1" } },
+    { "name": "Market", "alertLevel": 4, "lead": { "name": "Nova Quill", "channel": "B3" } },
+    { "name": "Gardens", "alertLevel": 1, "lead": { "name": "Moss Circuit", "channel": "C2" } },
+    { "name": "Station", "alertLevel": 3, "lead": { "name": "Solar Finch", "channel": "A4" } }
+  ]
+}
+
