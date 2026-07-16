@@ -20,6 +20,12 @@
 
 Signal Academy trains helpers who combine courage with careful thinking. Your first task is to create an ID card for a new recruit. Code is a list of precise instructions; PowerShell runs those instructions from top to bottom.
 
+## Why are we using PowerShell?
+
+PowerShell is already included with standard Windows 10 and 11 computers, so you can begin coding without first installing a separate programming language. It also has extensive documentation and a built-in help system.
+
+The aim of this course is not to memorise every PowerShell command. You are using PowerShell to learn how programs store information, make decisions, repeat work, organise data, handle mistakes, and solve larger problems one step at a time. Those ideas also appear in languages such as Python, JavaScript, and C#. If you choose another language later, its punctuation and command names will look different, but much of the thinking will transfer.
+
 ## Launch
 
 Run:
@@ -78,4 +84,3 @@ These shortcuts change editor speed, not program behavior.
 In one sentence: what is the difference between a variable name and its value?
 
 **Next:** [Power-Up Calculations](../02-calculations/README.md)
-

@@ -4,6 +4,29 @@ An original, beginner-friendly coding course for ages 13+ using the Windows Powe
 
 Over ten one-hour lessons, recruits join **Signal Academy**, a fictional team that helps their city through planning, communication, science, and code. No existing comic-book characters, logos, stories, or catchphrases are used.
 
+## Why PowerShell?
+
+PowerShell was chosen because Windows PowerShell is included with standard Windows 10 and 11 installations. Students can write and run their first program without installing a separate programming language, configuring a compiler, or creating an online account. This removes much of the setup that can get in the way of a first coding experience.
+
+PowerShell is also well documented by Microsoft and the wider technical community. Students therefore have access to extensive help, examples, and reference material when they are ready to explore beyond the course.
+
+VS Code is the recommended editor because it makes scripts easier to read, run, and debug, but the programming examples themselves use the PowerShell already available on Windows.
+
+## The real goal: learning to program
+
+This is not primarily a course about memorising PowerShell commands. PowerShell is the tool used to explore the fundamental building blocks shared by many programming languages:
+
+- values, variables, and data types;
+- input, output, and calculations;
+- decisions and Boolean logic;
+- loops and collections;
+- functions and reusable code;
+- files and structured data;
+- validation, errors, debugging, and testing;
+- breaking a larger problem into smaller steps.
+
+By the end, students should be able to read a small program, explain how information moves through it, change its behaviour, find common mistakes, and design a simple program of their own. These skills provide a foundation for continuing with PowerShell or moving to languages such as Python, JavaScript, C#, or others. The syntax will change, but the underlying ways of thinking will be familiar.
+
 ## What students build
 
 Students begin with tiny scripts and finish with an interactive **Hero Command Centre**. Along the way they create a hero profile, gadget calculator, patrol decision system, rescue roster, mission toolkit, clue analyser, city map, and mission log.
@@ -64,4 +87,3 @@ Start at [Lesson 1](lessons/01-welcome/README.md), or read the [teacher guide](t
 ## Licensing
 
 The course text is licensed under [CC BY 4.0](LICENSE-CONTENT), and code is licensed under the [MIT License](LICENSE-CODE). “Signal Academy” and all characters in the course are original fictional teaching material.
-

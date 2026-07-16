@@ -4,6 +4,8 @@
 
 Signal Academy teaches transferable programming ideas through Windows PowerShell 5.1. The heroic framing is about community help, calm decisions, teamwork, and responsible technology. Every character and organisation is original so teachers can adapt them without relying on licensed franchises.
 
+PowerShell is the course vehicle rather than the final destination. It was chosen because Windows PowerShell is included with standard Windows 10 and 11 installations, requires little setup for the first lesson, and is supported by extensive Microsoft and community documentation. The teaching emphasis should remain on values, control flow, collections, decomposition, debugging, testing, and other concepts that transfer to additional programming languages.
+
 The course assumes no coding experience. Typing examples is encouraged: small typing errors become useful debugging practice. Students should work locally and need GitHub only when the class is ready to publish or collaborate.
 
 ## Standard 60-minute rhythm
@@ -66,4 +68,3 @@ Interactive scripts are designed for manual testing because they teach input and
 ## Before each class
 
 Run the course test, open the lesson example, and check that students start in the repository root. For lessons 7–10, confirm the supplied `data` folders are present. No administrator access or cloud service is required.
-
