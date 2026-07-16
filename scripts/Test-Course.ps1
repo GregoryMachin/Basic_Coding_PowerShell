@@ -25,7 +25,8 @@ foreach ($script in $allScripts) {
 $scripts = Get-ChildItem -Path (Join-Path $repoRoot 'lessons') -Recurse -Filter '*.ps1' |
     Where-Object {
         $_.FullName -match '\\(examples|solution)\\' -and
-        $_.FullName -notmatch '\\interactive\\'
+        $_.FullName -notmatch '\\interactive\\' -and
+        -not (Select-String -LiteralPath $_.FullName -Pattern '\bRead-Host\b' -Quiet)
     }
 $scripts += Get-ChildItem -Path (Join-Path $repoRoot 'final-project') -Recurse -Filter '*.ps1' |
     Where-Object { $_.Name -notin @('Command-Centre.ps1', 'starter.ps1') }
