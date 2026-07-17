@@ -10,6 +10,6 @@ foreach ($path in $paths) {
     }
     catch {
         Write-Warning "Could not load $(Split-Path $path -Leaf). Check that the file exists."
+        Write-Host "Error type: $($_.Exception.GetType().Name)"
     }
 }
-

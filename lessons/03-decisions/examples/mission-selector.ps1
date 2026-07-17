@@ -1,20 +1,23 @@
-param(
-    [ValidateRange(0, 10)]
-    [int]$Risk = 6,
-    [bool]$PeopleNearby = $true
-)
+[int]$risk = Read-Host 'Risk level from 0 to 10'
+$nearbyAnswer = (Read-Host 'Are people nearby? Y/N').Trim()
+[bool]$peopleNearby = $nearbyAnswer -eq 'Y'
 
-Write-Host '=== RESPONSE RECOMMENDATION ===' -ForegroundColor Magenta
-if ($Risk -ge 8 -and $PeopleNearby) {
+if ($risk -ge 8 -and $peopleNearby) {
     $response = 'Full rescue and safety team'
+    $reason = 'High risk with people nearby'
 }
-elseif ($Risk -ge 4) {
+elseif ($risk -ge 4) {
     $response = 'Two-person scout team'
+    $reason = 'Moderate or high risk requires investigation'
 }
 else {
     $response = 'Remote signal monitoring'
+    $reason = 'Low reported risk'
 }
 
-Write-Host "Risk: $Risk/10"
+Write-Host '=== RESPONSE RECOMMENDATION ===' -ForegroundColor Magenta
+Write-Host "Risk: $risk/10"
+Write-Host "People nearby: $peopleNearby"
 Write-Host "Recommendation: $response"
+Write-Host "Reason: $reason"
 

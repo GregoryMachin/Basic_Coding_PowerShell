@@ -1,12 +1,20 @@
 $roster = @(
-    [pscustomobject]@{ Name = 'Echo Lantern'; Skill = 'Communications'; Level = 4 }
-    [pscustomobject]@{ Name = 'Nova Quill'; Skill = 'Navigation'; Level = 3 }
-    [pscustomobject]@{ Name = 'Moss Circuit'; Skill = 'Engineering'; Level = 5 }
+    [pscustomobject]@{ Name = 'Echo Lantern'; Skill = 'Communications'; Level = 4; Available = $true }
+    [pscustomobject]@{ Name = 'Nova Quill'; Skill = 'Navigation'; Level = 3; Available = $true }
+    [pscustomobject]@{ Name = 'Moss Circuit'; Skill = 'Engineering'; Level = 5; Available = $false }
+    [pscustomobject]@{ Name = 'Quartz Kite'; Skill = 'Engineering'; Level = 3; Available = $true }
 )
 
-Write-Host '=== AVAILABLE TEAM ===' -ForegroundColor Green
-$roster | Sort-Object Level -Descending | Format-Table -AutoSize
+$qualified = $roster | Where-Object { $_.Level -ge 3 -and $_.Available }
+$ranked = $qualified | Sort-Object Level, Name -Descending
 
-$engineers = $roster | Where-Object { $_.Skill -eq 'Engineering' }
-Write-Host "Engineering matches: $($engineers.Count)"
+Write-Host '=== AVAILABLE QUALIFIED TEAM ===' -ForegroundColor Green
+$ranked | Format-Table -AutoSize
+
+Write-Host '=== SKILL COUNTS ===' -ForegroundColor Cyan
+$roster | Group-Object Skill | Sort-Object Count -Descending |
+    Select-Object Name, Count | Format-Table -AutoSize
+
+$average = ($roster | Measure-Object Level -Average).Average
+Write-Host ('Average roster level: {0:N1}' -f $average)
 

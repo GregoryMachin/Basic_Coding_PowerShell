@@ -1,58 +1,122 @@
 # Lesson 5 — Team Rosters
 
-**Mission:** Represent a team and find the right member for a task.  
-**Learn:** arrays, hashtables, custom objects, properties, filtering, and sorting.  
-**Recharge:** `foreach` can inspect every item; `if` can select matching items.
+**Mission:** Model a rescue team and query it fairly.<br>
+**Learn:** arrays, hashtables, custom objects, properties, pipelines, filtering, sorting, selecting, grouping, and aggregation.<br>
+**Recharge:** loops inspect items one at a time; collections keep related items together.
 
 ## Flight plan
 
-0–5 roster hook; 5–15 collection types; 15–30 build objects; 30–45 challenge; 45–52 query contest; 52–58 Git branch; 58–60 exit.
+| Minutes | Activity |
+|---:|---|
+| 0–10 | Compare arrays, hashtables, and objects |
+| 10–20 | Build consistent roster records |
+| 20–32 | Trace objects through a pipeline |
+| 32–45 | Roster-query challenge |
+| 45–52 | Group, count, and review selection rules |
+| 52–58 | Bonus bite: Git branches |
+| 58–60 | Exit ticket |
 
-## Choose a collection
+## Three useful structures
+
+### Array: ordered items
 
 ```powershell
-$skills = @('Navigation', 'First aid')       # ordered list
-$hero = @{ Name = 'Patch'; Level = 4 }       # key/value lookup
-$member = [pscustomobject]@{                  # record with properties
+$skills = @('Navigation', 'First aid', 'Engineering')
+Write-Host $skills[0]
+Write-Host $skills.Count
+```
+
+Arrays answer “which item is at this position?” Positions begin at zero.
+
+### Hashtable: values by key
+
+```powershell
+$hero = @{ Name = 'Patch'; Level = 4 }
+Write-Host $hero['Name']
+```
+
+Hashtables are flexible key/value lookups. They are useful for settings and quick records, but property order and display are not their main purpose.
+
+### Custom object: a consistent record
+
+```powershell
+$member = [pscustomobject]@{
     Name  = 'Patch'
     Skill = 'First aid'
     Level = 4
 }
+Write-Host $member.Skill
 ```
 
-Run `examples/rescue-roster.ps1`. The pipeline `|` passes objects from one command to the next. PowerShell pipelines pass structured objects, not merely displayed text.
+Use an array of custom objects for table-like records. Give every roster member the same properties so later commands can treat them consistently.
+
+## Objects through a pipeline
+
+PowerShell's pipeline passes structured objects, not merely displayed text:
+
+```powershell
+$qualified = $roster |
+    Where-Object { $_.Level -ge 3 } |
+    Sort-Object Level -Descending
+```
+
+- `|` passes output to the next command.
+- `$_` is the current pipeline object inside the script block.
+- `Where-Object` keeps matching objects.
+- `Sort-Object` changes their order.
+- `Select-Object` chooses or calculates properties.
+- `Group-Object` groups equal property values.
+- `Measure-Object` counts or calculates numeric summaries.
+
+Keep `Format-Table` at the display boundary. Formatting instructions are difficult to filter, export, or calculate with afterward.
+
+## Guided build
+
+Run `examples/rescue-roster.ps1`. Pause after each pipeline stage and inspect:
+
+```powershell
+$roster
+$qualified
+$qualified | Select-Object Name, Skill, Level
+```
+
+Add one consistent property, such as `Available`, to every object and update the filter.
 
 ## Challenge — Build and query a roster
 
-Open `challenge/starter.ps1`.
+**Core:** add a third member, filter level 3 or higher, sort descending, and select a suggested lead.<br>
+**Power-up:** require both sufficient level and availability.<br>
+**Power-up:** group members by skill and display each group count.<br>
+**Mission specialist:** calculate average level and create a calculated `Readiness` property.<br>
+**Team-up:** design a selection rule, then list important information the data does not capture. A program can apply a rule consistently without proving that the rule is fair.
 
-**Core:** add a third original member and use `Where-Object` to show members whose level is at least 3.  
-**Power-up:** sort by level descending and select the first member.  
-**Team-up:** design a fair rule for selecting a team; discuss what useful information your data leaves out.
-
-Useful patterns:
+Calculated property pattern:
 
 ```powershell
-$roster | Where-Object { $_.Level -ge 3 }
-$roster | Sort-Object Level -Descending
+$roster | Select-Object Name, @{ Name = 'Readiness'; Expression = { $_.Level * 20 } }
 ```
 
-`$_` means “the current pipeline object.” Formatting commands belong at the end because they turn useful objects into display instructions.
+## Tests
+
+Try no matching members, tied levels, one unavailable high-level member, and a missing skill. Decide whether `Select-Object -First 1` needs a tie-breaking rule.
+
+## Checkpoint
+
+You can choose a collection type, access an item/property, explain `$_`, trace a multi-stage pipeline, and keep formatting at the end.
 
 ## Bonus bite — Safe experiments with branches
 
 ```powershell
 git status
 git switch -c roster-experiment
-# On older Git: git checkout -b roster-experiment
 git branch
 ```
 
-A branch is a movable label for a line of snapshots. Commit your experiment before switching back. Your teacher can demonstrate merging; you do not need it for the next lesson.
+On older Git use `git checkout -b roster-experiment`. Commit before switching branches, and merge only with teacher guidance.
 
 ## Exit ticket
 
-When would an array be a better choice than one hashtable?
+Why is an array of consistent custom objects useful for a roster?
 
 **Previous:** [Lesson 4](../04-loops/README.md) · **Next:** [Reusable Mission Tools](../06-functions/README.md)
 

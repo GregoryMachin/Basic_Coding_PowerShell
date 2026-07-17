@@ -14,8 +14,16 @@ function Test-MissionReady {
     $BatteryPercent -ge 25 -and $TeamSize -ge 2
 }
 
-$minutes = ConvertTo-TravelMinutes -DistanceKm 12 -SpeedKmh 24
-$ready = Test-MissionReady -BatteryPercent 80 -TeamSize 3
-Write-Host "Travel time: $minutes minutes"
-Write-Host "Ready: $ready"
+function New-MissionPlan {
+    param([double]$DistanceKm, [double]$SpeedKmh, [int]$BatteryPercent, [int]$TeamSize)
+    [pscustomobject]@{
+        TravelMinutes = ConvertTo-TravelMinutes $DistanceKm $SpeedKmh
+        Ready = Test-MissionReady $BatteryPercent $TeamSize
+        BatteryPercent = $BatteryPercent
+        TeamSize = $TeamSize
+    }
+}
+
+New-MissionPlan -DistanceKm 12 -SpeedKmh 24 -BatteryPercent 80 -TeamSize 3 |
+    Format-List
 

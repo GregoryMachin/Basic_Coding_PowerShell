@@ -1,50 +1,100 @@
 # Lesson 8 — Safe Operations
 
-**Mission:** Make a dispatcher that handles incorrect input calmly.  
-**Learn:** validation, terminating errors, `try`/`catch`/`finally`, and useful messages.  
-**Recharge:** conditions handle expected choices; error handling deals with operations that fail.
+**Mission:** Make input and file operations fail safely and explain what went wrong.<br>
+**Learn:** expected invalid input, `TryParse`, retry loops, exceptions, terminating errors, typed catches, `throw`, `finally`, and useful error records.<br>
+**Recharge:** `if` handles anticipated states; `try`/`catch` handles operations that throw.
 
 ## Flight plan
 
-0–5 failure-as-information; 5–15 error anatomy; 15–30 safe dispatcher; 30–45 challenge; 45–52 failure tests; 52–58 breakpoints; 58–60 exit.
+| Minutes | Activity |
+|---:|---|
+| 0–10 | Classify validation failures and exceptions |
+| 10–22 | Parse input without throwing |
+| 22–32 | Catch a failed file operation |
+| 32–45 | Three-attempt signal challenge |
+| 45–52 | Build and run a failure-test matrix |
+| 52–58 | Bonus bite: conditional breakpoints |
+| 58–60 | Exit ticket |
 
-## Read errors like clues
+## Two kinds of failure
 
-Start with the first error, then locate the file and line. Separate user input problems from programmer bugs. Do not hide every error with `SilentlyContinue`; provide an actionable message.
+**Expected invalid input** is something the program can anticipate: blank input, a word where a number is required, or a value outside a range. Use parsing and conditions so the user can correct it.
+
+**An exception** reports an operation that could not complete: a missing file, denied access, or malformed data. Use `try`/`catch` around the smallest operation that may throw.
+
+Programmer mistakes also produce errors, but catching everything is not a substitute for finding and fixing a bug.
+
+## Parse without throwing
+
+```powershell
+$answer = Read-Host 'Strength from 0 to 10'
+$strength = 0
+$isNumber = [int]::TryParse($answer, [ref]$strength)
+```
+
+`TryParse` returns a Boolean. `[ref]` lets the method place the parsed value into `$strength`. Check parsing first, then the allowed range.
+
+```powershell
+if (-not $isNumber) { Write-Warning 'Enter a whole number.' }
+elseif ($strength -notin 0..10) { Write-Warning 'Use 0 through 10.' }
+```
+
+## Exceptions and error action
+
+Some cmdlets report non-terminating errors and continue. `-ErrorAction Stop` turns that operation's error into one `catch` can handle:
 
 ```powershell
 try {
-    $data = Get-Content $path -ErrorAction Stop
+    $data = Get-Content -LiteralPath $path -ErrorAction Stop
 }
-catch [System.IO.FileNotFoundException] {
-    Write-Warning "Could not find: $path"
+catch [System.Management.Automation.ItemNotFoundException] {
+    Write-Warning "File not found: $path"
+}
+catch {
+    Write-Warning "Load failed: $($_.Exception.Message)"
 }
 finally {
-    Write-Verbose 'Attempt complete'
+    Write-Verbose 'Load attempt finished'
 }
 ```
 
-`-ErrorAction Stop` converts many non-terminating cmdlet errors into errors that `catch` can handle.
+A typed catch handles a known exception; the final generic catch handles others. `finally` runs whether the operation succeeds or fails, which is useful for cleanup. `throw` creates or rethrows a terminating error when the caller cannot safely continue.
 
-Run `examples/safe-dispatcher.ps1`, which deliberately checks one valid and one missing file.
+Avoid hiding every error with `SilentlyContinue`. A useful message says what failed, where, and what the user can do.
 
-## Challenge — Validate a signal strength
+## Guided build
 
-Open `challenge/starter.ps1`.
+Run `examples/safe-dispatcher.ps1`. Add `$_.Exception.GetType().Name` inside `catch`, then compare the missing-file failure with a valid file.
 
-**Core:** use `[int]::TryParse()` to accept only whole numbers, then check range 0–10. Display a helpful message for each invalid case.  
-**Power-up:** put parsing in `Read-SignalStrength` and allow up to three attempts.  
-**Team-up:** create a failure-test table containing blank, word, negative, boundary, and too-large inputs.
+## Challenge — Three-attempt signal reader
 
-The solution accepts a parameter for repeatable automated testing. The starter is interactive and belongs in `interactive/`, so the course test intentionally skips it.
+**Core:** implement `TryParse`, range checking, and a clear message for each invalid case.<br>
+**Power-up:** place it in `Read-SignalStrength` and allow three attempts with `while`.<br>
+**Power-up:** return the valid number; throw a clear error after all attempts fail.<br>
+**Mission specialist:** catch that error in a caller and choose a safe default.<br>
+**Team-up:** run a failure matrix while recording expected and actual messages.
+
+| Input | Expected |
+|---|---|
+| blank | whole-number message |
+| `fast` | whole-number message |
+| `-1` | range message |
+| `0` | accepted boundary |
+| `10` | accepted boundary |
+| `11` | range message |
+
+The interactive solution includes the retry loop. `solution/validate-strength.ps1` remains parameterized for repeatable automated checks, and `solution/safe-loader.ps1` demonstrates exceptions and fallback data.
+
+## Checkpoint
+
+You can distinguish validation from an exception, explain `[ref]`, make a cmdlet error terminating, inspect an error record, and decide where retry belongs.
 
 ## Bonus bite — Conditional breakpoint
 
-In VS Code, add a breakpoint in a loop. Right-click the red dot, choose **Edit Breakpoint**, and use a condition such as `$attempt -eq 3`. Debugging pauses the program so you can observe it; it does not repair it automatically.
+Set a breakpoint inside the retry loop and give it condition `$attempt -eq 3`. Debugging lets you observe state; it does not repair the program automatically.
 
 ## Exit ticket
 
-When would you use an `if` statement instead of a `catch` block?
+Why is a non-numeric answer usually validation, while a missing required file is usually handled as an exception?
 
 **Previous:** [Lesson 7](../07-files/README.md) · **Next:** [City Data Network](../09-data/README.md)
-

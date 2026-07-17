@@ -1,8 +1,21 @@
-$answer = Read-Host 'Enter signal strength from 0 to 10'
-$strength = 0
+function Read-SignalStrength {
+    $attempt = 1
+    while ($attempt -le 3) {
+        $answer = Read-Host "Attempt $attempt of 3: signal strength from 0 to 10"
+        $strength = 0
+        # TODO: Use [int]::TryParse($answer, [ref]$strength).
+        # TODO: Explain parsing and range failures, then increment $attempt.
+        # TODO: Return $strength when it is valid.
+        $attempt++
+    }
+    throw 'No valid signal strength was entered after three attempts.'
+}
 
-# TODO: Use [int]::TryParse($answer, [ref]$strength).
-# TODO: If parsing fails, explain that a whole number is required.
-# TODO: If the number is outside 0..10, explain the valid range.
-# TODO: Otherwise display the accepted strength.
+try {
+    $strength = Read-SignalStrength
+    Write-Host "Accepted signal strength: $strength"
+}
+catch {
+    Write-Warning $_.Exception.Message
+}
 

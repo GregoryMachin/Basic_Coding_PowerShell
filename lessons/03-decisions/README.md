@@ -1,57 +1,131 @@
 # Lesson 3 — Mission Decisions
 
-**Mission:** Recommend the right response team.  
-**Learn:** comparisons, Boolean values, and `if`/`elseif`/`else`.  
-**Recharge:** variables can contain numbers or strings; operators create new values.
+**Mission:** Build an interactive system that recommends a safe response.<br>
+**Learn:** Boolean expressions, comparisons, compound conditions, branch order, decision tables, and boundary testing.<br>
+**Recharge:** calculations create values; comparisons turn values into `$true` or `$false`.
 
-## Flight plan
+## 60-minute flight plan
 
-0–5 ethical decision hook; 5–15 comparisons; 15–30 guided selector; 30–45 challenge; 45–52 boundary tests; 52–58 Git bonus; 58–60 exit.
+| Minutes | Activity |
+|---:|---|
+| 0–8 | Compare values and inspect Boolean results |
+| 8–18 | Translate a decision table into conditions |
+| 18–30 | Guided interactive mission selector |
+| 30–44 | Weather-check challenge |
+| 44–52 | Boundary and conflicting-condition tests |
+| 52–58 | Bonus bite: first Git snapshot |
+| 58–60 | Exit ticket |
 
-## Story hook
+## From questions to Booleans
 
-A dispatcher must make consistent decisions. A decision tree makes the rules visible so humans can review them. The program recommends; a responsible person remains in charge.
+A condition is an expression whose result is `$true` or `$false`:
 
-Run:
+```powershell
+[int]$risk = 6
+$isHighRisk = $risk -ge 8
+Write-Host $isHighRisk # False
+```
+
+| Operator | Question | Example |
+|---|---|---|
+| `-eq` | equal? | `$status -eq 'Active'` |
+| `-ne` | not equal? | `$status -ne 'Complete'` |
+| `-gt` / `-ge` | greater than / at least? | `$risk -ge 8` |
+| `-lt` / `-le` | less than / at most? | `$wind -le 30` |
+
+PowerShell string comparisons are case-insensitive by default. Numeric comparisons should use numeric values, not numeric-looking strings.
+
+## Combining conditions
+
+```powershell
+$launch = ($wind -le 30) -and (-not $lightning)
+```
+
+| A | B | `A -and B` | `A -or B` |
+|---|---|---|---|
+| `$false` | `$false` | `$false` | `$false` |
+| `$false` | `$true` | `$false` | `$true` |
+| `$true` | `$false` | `$false` | `$true` |
+| `$true` | `$true` | `$true` | `$true` |
+
+`-not` reverses one Boolean value. PowerShell also short-circuits: with `-and`, it does not evaluate the second condition when the first is already false; with `-or`, it stops once a condition is true.
+
+## Decision tables before code
+
+Write rules in a table so people can review them before translating them:
+
+| Risk | People nearby | Response |
+|---:|---|---|
+| 8–10 | Yes | Full response team |
+| 4–10 | Any other case | Scout team |
+| 0–3 | Any | Remote monitoring |
+
+Test the most specific or demanding rule first:
+
+```powershell
+if ($risk -ge 8 -and $peopleNearby) {
+    $response = 'Full response team'
+    $reason = 'High risk with people nearby'
+}
+elseif ($risk -ge 4) {
+    $response = 'Scout team'
+    $reason = 'Moderate or high risk'
+}
+else {
+    $response = 'Remote monitoring'
+    $reason = 'Low reported risk'
+}
+```
+
+If `$risk -ge 4` appeared first, risk 9 would never reach the high-risk branch. Returning a reason makes the decision easier to inspect.
+
+## Guided build
+
+Run `examples/mission-selector.ps1`. Enter risk and whether people are nearby, then rerun it with a boundary value.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\lessons\03-decisions\examples\mission-selector.ps1
 ```
 
-## Decision anatomy
-
-```powershell
-if ($risk -ge 8) {
-    'Send the full response team'
-}
-elseif ($risk -ge 4) {
-    'Send a scout team'
-}
-else {
-    'Monitor the signal'
-}
-```
-
-Conditions evaluate to `$true` or `$false`. Useful operators are `-eq`, `-ne`, `-gt`, `-ge`, `-lt`, and `-le`. Combine conditions using `-and` or `-or`; reverse one with `-not`.
-
-Order matters: test the most demanding condition first. If `$risk -ge 4` came first, risk 9 would never reach the higher branch.
+For now, enter the requested kind of value. Lesson 8 adds robust input validation.
 
 ## Challenge — Weather launch check
 
-Open `challenge/starter.ps1`.
+Open `challenge/starter.ps1` and implement this decision table:
 
-Rules:
+| Lightning | Wind | Visibility | Result |
+|---|---:|---:|---|
+| Yes | Any | Any | `DO NOT LAUNCH` |
+| No | Above 60 | Any | `DO NOT LAUNCH` |
+| No | Any | Below 5 km | `DO NOT LAUNCH` |
+| No | 31–60 | At least 5 km | `CAUTION` |
+| No | 0–30 | At least 5 km | `CLEAR` |
 
-- `DO NOT LAUNCH` when lightning is present or wind is above 60.
-- `CAUTION` when wind is 31–60 inclusive.
-- `CLEAR` otherwise.
+**Core:** produce the correct status and a short reason.<br>
+**Power-up:** calculate `$needsReview` using one compound Boolean expression.<br>
+**Mission specialist:** add a `switch`-based recommendation for a separate text mission type such as `Rescue`, `Survey`, or `Delivery`.<br>
+**Team-up:** one student supplies a test row while the other predicts the first matching branch. Swap roles.
 
-**Power-up:** also require visibility of at least 5 km.  
-**Team-up:** write boundary tests for wind 30, 31, and 60 before running them.
+The interactive solution mirrors the starter. The advanced solution uses repeatable script parameters and validation attributes; these are formally developed later.
+
+## Test table
+
+| Lightning | Wind | Visibility | Expected |
+|---|---:|---:|---|
+| No | 30 | 5 | `CLEAR` |
+| No | 31 | 5 | `CAUTION` |
+| No | 60 | 5 | `CAUTION` |
+| No | 61 | 10 | `DO NOT LAUNCH` |
+| Yes | 10 | 10 | `DO NOT LAUNCH` |
+| No | 10 | 4 | `DO NOT LAUNCH` |
+
+Boundary tests answer whether rules include or exclude their endpoints. Conflicting-condition tests confirm that the most important rule wins.
+
+## Checkpoint
+
+You can explain how a comparison produces a Boolean, combine conditions, translate a table into ordered branches, and justify a boundary test.
 
 ## Bonus bite — Your first Git snapshot
-
-If Git is installed, run from the repository root:
 
 ```powershell
 git status
@@ -59,11 +133,11 @@ git add lessons/03-decisions/challenge/starter.ps1
 git commit -m "Complete weather launch check"
 ```
 
-A commit is a named snapshot, not a cloud upload. `git status` is safe to run often. If identity is not configured, follow your teacher's class policy; do not invent personal details for a public repository.
+A commit is a local named snapshot, not automatically a cloud upload. Review `git status` first and follow class identity/privacy policy.
 
 ## Exit ticket
 
-Why should boundary values such as 30 and 31 be tested?
+Why should the most specific or highest-priority condition usually appear first?
 
 **Previous:** [Lesson 2](../02-calculations/README.md) · **Next:** [Patrol Patterns](../04-loops/README.md)
 

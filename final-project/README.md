@@ -8,6 +8,8 @@ This folder contains the Lesson 10 capstone.
 - `data/missions.seed.csv` — original fictional starting data
 - `tests/Test-CommandCentre.ps1` — small no-framework test script
 
+Lesson 10 uses tiered completion levels: **Ready**, **Operational**, **Persistent**, **Hardened**, and **Specialist**. The starter supplies persistence scaffolding so a student can deliver a useful Ready-level program in one hour, then extend it without changing projects.
+
 Run the starter or reference app from the repository root:
 
 ```powershell
@@ -22,4 +24,3 @@ Run the focused tests:
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\final-project\tests\Test-CommandCentre.ps1
 ```
-
