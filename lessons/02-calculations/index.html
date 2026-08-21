@@ -1,0 +1,290 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Input, numbers, and useful calculations">
+  <title>Power-Up Calculations | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a aria-current="page" class="active" href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 2 of 10</p><p>Input, numbers, and useful calculations</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Comparison-Operators.png"><img src="../../Images/Final%20images/PowerShell-Comparison-Operators.png" alt="PowerShell reference for Power-Up Calculations"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-2-power-up-calculations">Lesson 2 — Power-Up Calculations</h1>
+<p><strong>Mission:</strong> Build an interactive gadget energy calculator. <strong>Learn:</strong> numeric input, conversion, arithmetic expressions, evaluation order, intermediate values, percentages, and formatted output. <strong>Recharge:</strong> variables store typed values; <code>Read-Host</code> collects text from the user.</p>
+<h2 id="60-minute-flight-plan">60-minute flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–5</td>
+<td>Predict what happens when text and numbers are combined</td>
+</tr>
+<tr>
+<td>5–15</td>
+<td>Convert input and compare integer and decimal values</td>
+</tr>
+<tr>
+<td>15–28</td>
+<td>Build and trace the interactive power-rating calculator</td>
+</tr>
+<tr>
+<td>28–42</td>
+<td>Complete the core battery-planner challenge</td>
+</tr>
+<tr>
+<td>42–50</td>
+<td>Format results and run boundary tests</td>
+</tr>
+<tr>
+<td>50–52</td>
+<td>Choose a power-up extension</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: control the terminal efficiently</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="story-hook">Story hook</h2>
+<p>The academy&#39;s Beacon Pack powers navigation, communications, and safety equipment. A mission planner must calculate whether the pack contains enough energy without confusing text, whole numbers, decimal values, or measurement units.</p>
+<p>Computers calculate quickly and consistently, but they do exactly what the code says—not necessarily what its author intended. Clear variables, small calculation steps, and carefully chosen tests help us check that a result makes sense.</p>
+<h2 id="recharge-input-begins-as-text">Recharge — input begins as text</h2>
+<p><code>Read-Host</code> always returns a string, even when the user types digits:</p>
+<pre><code class="language-powershell">$inputText = Read-Host &#39;Enter a number&#39;
+Write-Host $inputText.GetType().Name # String</code></pre>
+<p>The type affects what <code>+</code> means. With a string on the left, PowerShell combines text:</p>
+<pre><code class="language-powershell">$inputText = &#39;7&#39;
+Write-Host ($inputText + 5) # Displays 75</code></pre>
+<p>Convert the text when it represents a number that will be used in a calculation:</p>
+<pre><code class="language-powershell">[int]$wholeNumber = $inputText
+Write-Host ($wholeNumber + 5) # Displays 12</code></pre>
+<p>For this lesson, entering non-numeric text where <code>[int]</code> or <code>[double]</code> is required will stop the script with an error. Lesson 8 teaches how to validate input and recover without stopping.</p>
+<h2 id="choosing-a-numeric-type">Choosing a numeric type</h2>
+<p>Use an integer when fractions do not make sense and a double when they might.</p>
+<pre><code class="language-powershell">[int]$batteryUnits = 8       # A count of complete battery units
+[double]$distanceKm = 12.5   # A measurement that can contain a fraction</code></pre>
+<p>Division can produce a <code>Double</code> even when both starting values are integers:</p>
+<pre><code class="language-powershell">$average = 7 / 2
+Write-Host $average                 # 3.5
+Write-Host $average.GetType().Name  # Double</code></pre>
+<p><code>[double]</code> is appropriate for measurements in this course. Software that requires exact base-10 arithmetic, such as financial software, often uses <code>[decimal]</code> instead.</p>
+<h2 id="arithmetic-operators">Arithmetic operators</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Operator</th>
+<th>Meaning</th>
+<th>Example</th>
+<th>Result</th>
+</tr></thead><tbody>
+<tr>
+<td><code>+</code></td>
+<td>addition</td>
+<td><code>10 + 3</code></td>
+<td>13</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>subtraction</td>
+<td><code>10 - 3</code></td>
+<td>7</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>multiplication</td>
+<td><code>10 * 3</code></td>
+<td>30</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>division</td>
+<td><code>10 / 4</code></td>
+<td>2.5</td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>remainder after division</td>
+<td><code>10 % 4</code></td>
+<td>2</td>
+</tr>
+</tbody></table></div>
+<p>The remainder operator is useful for questions such as “is this number even?” or “how many units remain after filling complete groups?” It is optional in today&#39;s challenge.</p>
+<h2 id="evaluation-order-and-intermediate-variables">Evaluation order and intermediate variables</h2>
+<p>PowerShell normally evaluates multiplication and division before addition and subtraction. Parentheses make a different order explicit:</p>
+<pre><code class="language-powershell">10 + 2 * 3     # 16
+(10 + 2) * 3   # 36</code></pre>
+<p>Long expressions can be divided into named intermediate results:</p>
+<pre><code class="language-powershell">$batteryPower = $batteryUnits * 10
+$boostPower = $signalBoost * 5
+$generatedPower = $batteryPower + $boostPower</code></pre>
+<p>This is equivalent to:</p>
+<pre><code class="language-powershell">$generatedPower = ($batteryUnits * 10) + ($signalBoost * 5)</code></pre>
+<p>The longer version is often easier to explain, inspect, and debug. The variable names also preserve the meaning of each value.</p>
+<h2 id="guided-build-power-rating-calculator">Guided build — power-rating calculator</h2>
+<p>Run:</p>
+<pre><code class="language-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\lessons\02-calculations\examples\power-rating.ps1</code></pre>
+<p>The script asks for the number of battery units and the signal-boost level. It keeps the shield load and number of systems fixed, so the first run remains manageable.</p>
+<p>Before running it a second time:</p>
+<ol>
+<li>Predict what will happen if the battery units increase by one.</li>
+<li>Locate the intermediate variables for battery power and boost power.</li>
+<li>Enter different values and compare the result with your prediction.</li>
+<li>Change <code>$systemCount</code> from 3 to 4 and explain which output changes.</li>
+</ol>
+<p>Notice that each numeric output includes a unit. A value such as <code>40</code> is ambiguous; <code>40 energy units</code> explains what the value represents.</p>
+<h2 id="formatting-calculated-output">Formatting calculated output</h2>
+<p>Calculations can produce more decimal places than a report needs. PowerShell&#39;s <code>-f</code> format operator controls how a value is displayed:</p>
+<pre><code class="language-powershell">$averagePerSystem = 31 / 3
+$displayAverage = &#39;{0:N1}&#39; -f $averagePerSystem
+Write-Host &quot;$displayAverage energy units&quot;</code></pre>
+<ul>
+<li><code>{0}</code> means “insert the first supplied value here.”</li>
+<li><code>N1</code> means display it as a number with one digit after the decimal point.</li>
+<li><code>-f</code> connects the format string to the value.</li>
+</ul>
+<p>Formatting does not change the original value stored in <code>$averagePerSystem</code>; it creates a display string. Confirm this with:</p>
+<pre><code class="language-powershell">Write-Host $averagePerSystem
+Write-Host $averagePerSystem.GetType().Name
+Write-Host $displayAverage.GetType().Name</code></pre>
+<h2 id="challenge-beacon-battery-planner">Challenge — Beacon battery planner</h2>
+<p>Open <code>challenge/starter.ps1</code>. The starter asks for:</p>
+<ul>
+<li>starting energy;</li>
+<li>mission duration in minutes;</li>
+<li>energy used per minute;</li>
+<li>optional boost cost.</li>
+</ul>
+<p>Build the calculation one named step at a time:</p>
+<pre><code class="language-text">running energy = mission duration &#215; energy per minute
+total energy used = running energy + boost cost
+remaining energy = starting energy − total energy used
+percentage remaining = remaining energy &#247; starting energy &#215; 100</code></pre>
+<p>Use positive starting energy so the percentage calculation does not divide by zero.</p>
+<h3 id="challenge-levels">Challenge levels</h3>
+<p><strong>Core:</strong> complete all four calculations and display each result with its unit.</p>
+<p><strong>Power-up — polished report:</strong> format the percentage to one decimal place with <code>-f</code>.</p>
+<p><strong>Power-up — realistic limit:</strong> create <code>$safeRemaining</code> with <code>[Math]::Max(0, $remainingEnergy)</code> so the displayed battery cannot fall below zero. Keep <code>$remainingEnergy</code> as well so you can see the uncorrected calculation.</p>
+<p><strong>Power-up — decision preview:</strong> display <code>SAFE</code> when the clamped percentage is at least 20 and <code>RECHARGE</code> otherwise. This previews Lesson 3&#39;s <code>if</code> statement.</p>
+<p><strong>Mission specialist:</strong> calculate how many complete minutes the remaining energy can support. Decide what should happen when energy use per minute is zero.</p>
+<p><strong>Team-up:</strong> one student chooses inputs while the other predicts and traces every intermediate variable. Swap roles after each test.</p>
+<p>The interactive core solution is <code>solution/battery-planner.ps1</code>. It mirrors the starter before showing the optional power-ups.</p>
+<p>The separate <code>solution/battery-planner-advanced.ps1</code> demonstrates script parameters, validation attributes, <code>[Math]::Max()</code>, and an <code>if</code> decision. Those features are included as a preview; parameters are developed in Lesson 6, decisions in Lesson 3, and robust validation in Lesson 8.</p>
+<p>Try the advanced version with repeatable command-line values:</p>
+<pre><code class="language-powershell">.\lessons\02-calculations\solution\battery-planner-advanced.ps1 `
+-StartingEnergy 100 -Minutes 18 -EnergyPerMinute 4 -BoostCost 5</code></pre>
+<h2 id="test-before-trusting-the-result">Test before trusting the result</h2>
+<p>Use starting energy <code>100</code>, energy per minute <code>4</code>, and boost cost <code>0</code> for these tests:</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Scenario</th>
+<th>Minutes</th>
+<th>Energy used</th>
+<th>Raw remaining</th>
+<th>Why test it?</th>
+</tr></thead><tbody>
+<tr>
+<td>No use</td>
+<td>0</td>
+<td>0</td>
+<td>100</td>
+<td>lower boundary</td>
+</tr>
+<tr>
+<td>Normal mission</td>
+<td>10</td>
+<td>40</td>
+<td>60</td>
+<td>typical behaviour</td>
+</tr>
+<tr>
+<td>Exactly empty</td>
+<td>25</td>
+<td>100</td>
+<td>0</td>
+<td>exact boundary</td>
+</tr>
+<tr>
+<td>Too long</td>
+<td>30</td>
+<td>120</td>
+<td>−20</td>
+<td>reveals need for clamping</td>
+</tr>
+</tbody></table></div>
+<p>Also discuss these inputs before trying them:</p>
+<ul>
+<li><code>ten</code> for minutes: conversion fails because it is not numeric;</li>
+<li><code>-5</code> minutes: the calculation runs, but the input does not make real-world sense;</li>
+<li><code>0</code> starting energy: the percentage attempts to divide by zero;</li>
+<li><code>2.5</code> minutes: <code>[double]</code> accepts it, but <code>[int]</code> would not preserve the fraction.</li>
+</ul>
+<p>These are different kinds of problems. Arithmetic can be correct while the input or real-world assumption is invalid. Lesson 8 will make the program handle those situations safely.</p>
+<h2 id="teacher-support-prompts">Teacher support prompts</h2>
+<ul>
+<li>Ask “What is the value and type at this line?” rather than immediately correcting code.</li>
+<li>Have students say the units aloud while tracing a formula.</li>
+<li>If a long expression is confusing, split it into one intermediate variable per idea.</li>
+<li>Ask students to estimate first. A result of 6,000 instead of roughly 60 is easier to question when they have an expected range.</li>
+<li>Treat the advanced solution as an extension, not required knowledge for completing the lesson.</li>
+</ul>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You are ready when you can:</p>
+<ul>
+<li>explain why numeric input from <code>Read-Host</code> needs conversion;</li>
+<li>choose <code>[int]</code> or <code>[double]</code> for a described value;</li>
+<li>trace an expression using its evaluation order;</li>
+<li>split a calculation into named intermediate variables;</li>
+<li>format a decimal for display;</li>
+<li>test a normal value and a boundary value.</li>
+</ul>
+<h2 id="bonus-bite-terminal-control">Bonus bite — Terminal control</h2>
+<ul>
+<li>Up arrow recalls the previous command so you can change one input and rerun it.</li>
+<li><code>Tab</code> completes file and folder names.</li>
+<li><code>Ctrl+C</code> stops a running script.</li>
+<li><code>Clear-Host</code> clears visual clutter but does not delete saved files.</li>
+<li><code>Get-History</code> shows recent commands in the current terminal session.</li>
+</ul>
+<p>Use the up arrow to rerun the advanced solution with one parameter changed. This creates a repeatable experiment: change one input, hold the others constant, and compare the result.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<ol>
+<li>Why can <code>&#39;7&#39; + 5</code> behave differently from <code>[int]&#39;7&#39; + 5</code>?</li>
+<li>Why might a programmer store part of a calculation in an intermediate variable?</li>
+</ol>
+<p><strong>Previous:</strong> <a href="../01-welcome/index.html">Lesson 1</a> &#183; <strong>Next:</strong> <a href="../03-decisions/index.html">Mission Decisions</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Output, variables, and your first script">
+  <title>Welcome to Signal Academy | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a aria-current="page" class="active" href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 1 of 10</p><p>Output, variables, and your first script</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Variables-and-Data-Types.png"><img src="../../Images/Final%20images/PowerShell-Variables-and-Data-Types.png" alt="PowerShell reference for Welcome to Signal Academy"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-1-welcome-to-signal-academy">Lesson 1 — Welcome to Signal Academy</h1>
+<p><strong>Mission:</strong> Create an interactive hero ID card. <strong>Learn:</strong> scripts, output, input, variables, common data types, strings, and calculations. <strong>You need:</strong> no previous coding knowledge.</p>
+<h2 id="60-minute-flight-plan">60-minute flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–5</td>
+<td>Meet the academy and predict what code can automate</td>
+</tr>
+<tr>
+<td>5–15</td>
+<td>Run a first command and inspect an error safely</td>
+</tr>
+<tr>
+<td>15–32</td>
+<td>Explore variables and live-code <code>examples/hero-id.ps1</code></td>
+</tr>
+<tr>
+<td>32–45</td>
+<td>Complete the core challenge</td>
+</tr>
+<tr>
+<td>45–52</td>
+<td>Power-up/team-up extensions and pair demo</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: VS Code navigation</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="story-hook">Story hook</h2>
+<p>Signal Academy trains helpers who combine courage with careful thinking. Your first task is to create an ID card for a new recruit. Code is a list of precise instructions; PowerShell runs those instructions from top to bottom.</p>
+<h2 id="why-are-we-using-powershell">Why are we using PowerShell?</h2>
+<p>PowerShell is already included with standard Windows 10 and 11 computers, so you can begin coding without first installing a separate programming language. It also has extensive documentation and a built-in help system.</p>
+<p>The aim of this course is not to memorise every PowerShell command. You are using PowerShell to learn how programs store information, make decisions, repeat work, organise data, handle mistakes, and solve larger problems one step at a time. Those ideas also appear in languages such as Python, JavaScript, and C#. If you choose another language later, its punctuation and command names will look different, but much of the thinking will transfer.</p>
+<h2 id="launch">Launch</h2>
+<p>Run:</p>
+<pre><code class="language-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\lessons\01-welcome\examples\hero-id.ps1</code></pre>
+<p>The script asks you to enter a hero name in the terminal. Run it again with a different name and observe which parts of the output change.</p>
+<h2 id="what-is-a-variable">What is a variable?</h2>
+<p>A <strong>variable</strong> is a named place where a program stores a value while it is running. Giving useful names to values lets us reuse them, change them in one place, and explain what they mean.</p>
+<pre><code class="language-powershell"># A comment is a note for humans.
+$heroName = &quot;Nova Quill&quot;
+Write-Host &quot;Recruit: $heroName&quot;</code></pre>
+<ul>
+<li>PowerShell variable names start with <code>$</code>.</li>
+<li><code>=</code> assigns the value on its right to the name on its left.</li>
+<li><code>$heroName</code> is the variable&#39;s name; <code>&quot;Nova Quill&quot;</code> is its current value.</li>
+<li>A value can change later: <code>$heroName = &quot;Echo Lantern&quot;</code> replaces the old value.</li>
+</ul>
+<p>Variables exist in memory while the script runs. They are not automatically saved for next time. Later lessons use files when information needs to persist.</p>
+<p>Choose names that describe the stored information, such as <code>$batteryLevel</code>, rather than vague names such as <code>$x</code>.</p>
+<h2 id="common-variable-types">Common variable types</h2>
+<p>A value&#39;s <strong>type</strong> tells PowerShell what kind of data it represents and what operations make sense.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Type</th>
+<th>Example</th>
+<th>Used for</th>
+</tr></thead><tbody>
+<tr>
+<td>String (<code>[string]</code>)</td>
+<td><code>&#39;Nova Quill&#39;</code></td>
+<td>names, messages, and other text</td>
+</tr>
+<tr>
+<td>Integer (<code>[int]</code>)</td>
+<td><code>12</code></td>
+<td>whole numbers and counters</td>
+</tr>
+<tr>
+<td>Decimal (<code>[double]</code>)</td>
+<td><code>7.5</code></td>
+<td>measurements and calculations with fractions</td>
+</tr>
+<tr>
+<td>Boolean (<code>[bool]</code>)</td>
+<td><code>$true</code></td>
+<td>yes/no or on/off states</td>
+</tr>
+</tbody></table></div>
+<h3 id="string-text">String: text</h3>
+<p>A string is a sequence of characters: letters, numbers, spaces, or punctuation treated as text. Use strings for information such as a hero&#39;s name, a district, a description, or a message shown to the user.</p>
+<pre><code class="language-powershell">[string]$heroName = &#39;Nova Quill&#39;
+[string]$welcomeMessage = &quot;Welcome, $heroName!&quot;</code></pre>
+<p>Even if a string contains digits, PowerShell treats them as text. For example, <code>&#39;12&#39;</code> may be part of an ID such as <code>&#39;Mission-12&#39;</code>, but it should normally be converted to a numeric type before doing maths with it.</p>
+<h3 id="integer-whole-numbers">Integer: whole numbers</h3>
+<p>An integer stores a positive or negative whole number with no decimal part. Use integers for counts, levels, scores, menu choices, and other values where fractions do not make sense.</p>
+<pre><code class="language-powershell">[int]$missionsCompleted = 3
+[int]$nextMission = $missionsCompleted + 1</code></pre>
+<h3 id="double-numbers-with-decimal-places">Double: numbers with decimal places</h3>
+<p>A double stores numbers that may have a fractional part. Use doubles for distances, speeds, times, averages, and measurements.</p>
+<pre><code class="language-powershell">[double]$distanceKm = 12.5
+[double]$travelTimeHours = $distanceKm / 25</code></pre>
+<p><code>[double]</code> is suitable for the measurements in this course. Some decimal values cannot be represented perfectly by a computer, so financial software often uses the separate <code>[decimal]</code> type when exact base-10 calculations matter.</p>
+<h3 id="boolean-true-or-false">Boolean: true or false</h3>
+<p>A Boolean stores one of two values: <code>$true</code> or <code>$false</code>. Use it for questions with a yes/no answer, such as whether a beacon is ready or a mission is complete. Booleans are especially useful in decisions, which Lesson 3 explores.</p>
+<pre><code class="language-powershell">[bool]$beaconReady = $true
+[bool]$missionComplete = $false</code></pre>
+<p>Do not put quotes around <code>$true</code> or <code>$false</code>; quoted values are strings instead of Booleans.</p>
+<p>PowerShell can usually infer a type from the value:</p>
+<pre><code class="language-powershell">$district = &#39;Harbour Ward&#39; # PowerShell infers String
+$level = 2                 # PowerShell infers Int32</code></pre>
+<p>You can require a particular type with a <strong>type constraint</strong>:</p>
+<pre><code class="language-powershell">[int]$missionsCompleted = 3
+[bool]$beaconReady = $true</code></pre>
+<p>Inspect a value&#39;s type with:</p>
+<pre><code class="language-powershell">$missionsCompleted.GetType().Name</code></pre>
+<p>Run <code>examples/variable-types.ps1</code> to see these types in action.</p>
+<h2 id="combining-and-calculating-values">Combining and calculating values</h2>
+<p>Variables become useful when a program combines them to create new information.</p>
+<pre><code class="language-powershell">$heroName = &#39;Nova Quill&#39;
+$district = &#39;Harbour Ward&#39;
+$introduction = &quot;$heroName is assigned to $district.&quot;
+
+[int]$trainingMissions = 3
+[int]$rescueMissions = 2
+$totalMissions = $trainingMissions + $rescueMissions</code></pre>
+<p>The first example uses <strong>string interpolation</strong> to insert variable values into a new string. The second adds numeric values. The result can be stored in another variable and reused.</p>
+<p>Text inside quotes is a <strong>string</strong>.</p>
+<ul>
+<li>Double quotes replace <code>$heroName</code> with its value; single quotes display the characters literally.</li>
+<li><code>Write-Host</code> displays a message. Its console colour is decoration, not the data itself.</li>
+</ul>
+<p>Try <code>Write-Host &#39;Recruit: $heroName&#39;</code>. Why is the result different?</p>
+<h2 id="getting-input-with-read-host">Getting input with <code>Read-Host</code></h2>
+<p>Hard-coded values are useful while learning, but input lets the same script respond to different users:</p>
+<pre><code class="language-powershell">$heroName = Read-Host &#39;Enter your hero name&#39;
+Write-Host &quot;Welcome to Signal Academy, $heroName!&quot;</code></pre>
+<p><code>Read-Host</code> displays a prompt, waits for the user to type, and returns what they entered as a string. When you need a number, convert or constrain it:</p>
+<pre><code class="language-powershell">[int]$missionsCompleted = Read-Host &#39;How many missions have you completed&#39;
+$nextMilestone = $missionsCompleted + 1</code></pre>
+<p>Entering text where <code>[int]</code> expects a whole number produces an error. That is useful evidence about the program&#39;s assumptions; Lesson 8 teaches how to validate input and recover calmly.</p>
+<h2 id="challenge-your-hero-card">Challenge — Your hero card</h2>
+<p>Open <code>challenge/starter.ps1</code>. Replace every <code>TODO</code>, then run it.</p>
+<p><strong>Core:</strong> use <code>Read-Host</code> to ask for a codename and home district; store and display a special skill and motto. <strong>Power-up:</strong> ask for a numeric <code>$missionsCompleted</code>, calculate the next milestone, and display both values. <strong>Team-up:</strong> swap files with a partner and identify the name, value, and type of each variable.</p>
+<p>Compare behaviour with <code>solution/hero-card.ps1</code> only after your own attempt.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You are ready when you can:</p>
+<ul>
+<li>explain what a variable stores;</li>
+<li>name the four value types introduced in this lesson;</li>
+<li>combine strings and perform a calculation using variables;</li>
+<li>collect input with <code>Read-Host</code>;</li>
+<li>predict which line prints first;</li>
+<li>change the output by editing one value.</li>
+</ul>
+<h2 id="bonus-bite-vs-code-navigator">Bonus bite — VS Code navigator</h2>
+<ol>
+<li>Use <code>Ctrl+P</code>, type <code>starter.ps1</code>, and press Enter.</li>
+<li>Use <code>Ctrl+S</code> to save.</li>
+<li>Use `<code>Ctrl+</code> `` to show/hide the terminal.</li>
+<li>Use <code>Ctrl+/</code> to turn the current line into a comment.</li>
+</ol>
+<p>These shortcuts change editor speed, not program behaviour.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<p>In one sentence: what is the difference between a variable name and its value?</p>
+<p><strong>Next:</strong> <a href="../02-calculations/index.html">Power-Up Calculations</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

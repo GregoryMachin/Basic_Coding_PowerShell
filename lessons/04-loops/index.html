@@ -1,0 +1,146 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Repeat work safely with loops">
+  <title>Patrol Patterns | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a aria-current="page" class="active" href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 4 of 10</p><p>Repeat work safely with loops</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Loops.png"><img src="../../Images/Final%20images/PowerShell-Loops.png" alt="PowerShell reference for Patrol Patterns"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-4-patrol-patterns">Lesson 4 — Patrol Patterns</h1>
+<p><strong>Mission:</strong> Scan city zones and repeat work safely. <strong>Learn:</strong> <code>foreach</code>, <code>for</code>, <code>while</code>, counters, trace tables, off-by-one errors, <code>break</code>, and <code>continue</code>. <strong>Recharge:</strong> an <code>if</code> chooses a path once; a loop can revisit a block many times.</p>
+<h2 id="flight-plan">Flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–10</td>
+<td>Trace a <code>foreach</code> loop</td>
+</tr>
+<tr>
+<td>10–20</td>
+<td>Build and trace a counting <code>for</code> loop</td>
+</tr>
+<tr>
+<td>20–30</td>
+<td>Control a <code>while</code> loop safely</td>
+</tr>
+<tr>
+<td>30–44</td>
+<td>Countdown-and-scan challenge</td>
+</tr>
+<tr>
+<td>44–52</td>
+<td>Off-by-one and loop-control tests</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: VS Code debugger</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="choose-the-loop-that-matches-the-problem">Choose the loop that matches the problem</h2>
+<h3 id="foreach-visit-existing-items"><code>foreach</code>: visit existing items</h3>
+<pre><code class="language-powershell">foreach ($zone in @(&#39;Harbour&#39;, &#39;Market&#39;, &#39;Gardens&#39;)) {
+Write-Host &quot;Scanning $zone&quot;
+}</code></pre>
+<p>On each iteration, <code>$zone</code> refers to the next item. Use <code>foreach</code> when the collection already exists.</p>
+<h3 id="for-count-predictably"><code>for</code>: count predictably</h3>
+<pre><code class="language-powershell">for ($count = 5; $count -ge 1; $count--) {
+Write-Host $count
+}</code></pre>
+<p>The three sections mean: initialize once; continue while the condition is true; update after each iteration. Confusing <code>-gt</code> with <code>-ge</code> often creates an <strong>off-by-one error</strong>.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Iteration</th>
+<th><code>$count</code></th>
+<th><code>$count -ge 1</code></th>
+<th>Output</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>5</td>
+<td>True</td>
+<td>5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>True</td>
+<td>1</td>
+</tr>
+<tr>
+<td>next check</td>
+<td>0</td>
+<td>False</td>
+<td>stop</td>
+</tr>
+</tbody></table></div>
+<h3 id="while-repeat-until-a-condition-changes"><code>while</code>: repeat until a condition changes</h3>
+<pre><code class="language-powershell">$attempt = 1
+while ($attempt -le 3) {
+Write-Host &quot;Attempt $attempt&quot;
+$attempt++
+}</code></pre>
+<p>Something inside must eventually make the condition false. Use <code>Ctrl+C</code> to stop an accidental infinite loop.</p>
+<h2 id="controlling-a-loop">Controlling a loop</h2>
+<ul>
+<li><code>continue</code> skips the rest of the current iteration and starts the next.</li>
+<li><code>break</code> exits the nearest loop immediately.</li>
+</ul>
+<p>Use them when they make intent clearer, but avoid many exits that make control flow difficult to trace.</p>
+<h2 id="guided-build">Guided build</h2>
+<p>Run <code>examples/patrol-scanner.ps1</code>. Predict the alert count, change a strength, and trace <code>$alerts</code> after every iteration. Then run <code>examples/loop-lab.ps1</code> to see all three loop types.</p>
+<h2 id="challenge-countdown-and-patrol-scan">Challenge — Countdown and patrol scan</h2>
+<p>The starter provides a countdown and zone readings.</p>
+<p><strong>Core:</strong> complete the <code>for</code> countdown, use <code>foreach</code> to display each zone, and count weak signals. <strong>Power-up:</strong> use <code>continue</code> to skip a zone marked <code>Offline</code>. <strong>Power-up:</strong> use <code>break</code> after the first critical strength of 1. <strong>Mission specialist:</strong> use a <code>while</code> loop for up to three interactive rescan attempts. <strong>Team-up:</strong> one student traces variables in a table while the other executes. Swap roles.</p>
+<h2 id="tests">Tests</h2>
+<p>Test an empty list, one item, all strong, all weak, and a critical reading at the beginning versus the end. Explain how <code>break</code> changes the number of processed items.</p>
+<p>For a grid extension, nest one <code>for</code> loop inside another and print coordinates such as <code>A1</code>, <code>A2</code>, <code>B1</code>, and <code>B2</code>.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You can choose a loop type, identify its stopping condition, trace a counter, and explain one off-by-one error.</p>
+<h2 id="bonus-bite-debug-line-by-line">Bonus bite — Debug line by line</h2>
+<p>Set a breakpoint with <code>F9</code>, run with <code>F5</code>, inspect variables, and use <code>F10</code> to step. A conditional breakpoint such as <code>$signal.Strength -le 3</code> pauses only when its expression is true.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<p>Why is <code>foreach</code> usually clearer than <code>for</code> for an existing list of district names?</p>
+<p><strong>Previous:</strong> <a href="../03-decisions/index.html">Lesson 3</a> &#183; <strong>Next:</strong> <a href="../05-collections/index.html">Team Rosters</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

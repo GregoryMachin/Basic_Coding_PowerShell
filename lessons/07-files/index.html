@@ -1,0 +1,128 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Read, transform, and save data">
+  <title>Clue Files | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a aria-current="page" class="active" href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 7 of 10</p><p>Read, transform, and save data</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Reading-and-Writing-Files.png"><img src="../../Images/Final%20images/PowerShell-Reading-and-Writing-Files.png" alt="PowerShell reference for Clue Files"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-7-clue-files">Lesson 7 — Clue Files</h1>
+<p><strong>Mission:</strong> Persist, inspect, analyse, and verify city sensor readings. <strong>Learn:</strong> text and CSV files, safe paths, schemas, importing/exporting, encoding, overwrite/append behaviour, and round trips. <strong>Recharge:</strong> an object has properties; a CSV row becomes a PowerShell object.</p>
+<h2 id="flight-plan">Flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–10</td>
+<td>Compare memory, text files, and CSV</td>
+</tr>
+<tr>
+<td>10–20</td>
+<td>Build safe script-relative paths</td>
+</tr>
+<tr>
+<td>20–32</td>
+<td>Import and inspect typed CSV values</td>
+</tr>
+<tr>
+<td>32–45</td>
+<td>Alert-report challenge</td>
+</tr>
+<tr>
+<td>45–52</td>
+<td>Export, re-import, and verify</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: inspect a Git diff</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="from-temporary-variables-to-persistent-files">From temporary variables to persistent files</h2>
+<p>Variables normally disappear when the process ends. Files preserve data. Plain text is suited to human-readable lines; CSV is suited to repeated records with the same columns.</p>
+<pre><code class="language-powershell">$path = Join-Path $PSScriptRoot &#39;..\data\signals.csv&#39;
+if (-not (Test-Path -LiteralPath $path)) { throw &quot;Missing data: $path&quot; }
+$signals = Import-Csv -LiteralPath $path</code></pre>
+<ul>
+<li><code>$PSScriptRoot</code> is the current script&#39;s folder.</li>
+<li><code>Join-Path</code> constructs a path without assuming the terminal location.</li>
+<li><code>-LiteralPath</code> treats wildcard characters as ordinary filename characters.</li>
+<li><code>Test-Path</code> checks before an operation.</li>
+</ul>
+<h2 id="csv-structure-and-types">CSV structure and types</h2>
+<p>The first row contains headers; later rows contain corresponding values. Delimiters separate fields, and quotes protect values containing delimiters. <code>Import-Csv</code> creates one custom object per row.</p>
+<p>CSV does not preserve PowerShell types: imported values initially behave like strings. Convert numeric fields at the calculation boundary:</p>
+<pre><code class="language-powershell">$weak = $signals | Where-Object { [int]$_.Strength -lt 5 }</code></pre>
+<p>A <strong>schema</strong> is the expected set and meaning of columns. Check important columns before trusting a file.</p>
+<h2 id="reading-and-writing">Reading and writing</h2>
+<ul>
+<li><code>Get-Content</code> reads text lines; <code>-Raw</code> returns one string.</li>
+<li><code>Set-Content</code> replaces a text file.</li>
+<li><code>Add-Content</code> appends text.</li>
+<li><code>Export-Csv</code> normally replaces its destination; <code>-Append</code> adds rows.</li>
+<li><code>-NoTypeInformation</code> avoids the PowerShell 5.1 type header.</li>
+</ul>
+<p>Be deliberate about overwrite versus append. Re-running an idempotent report should produce the same result rather than duplicate rows.</p>
+<h2 id="guided-build">Guided build</h2>
+<p>Run <code>examples/clue-analyser.ps1</code>. Inspect the first imported object with <code>$signals[0] | Format-List *</code>, then inspect <code>Strength.GetType().Name</code> before conversion.</p>
+<h2 id="challenge-alert-report">Challenge — Alert report</h2>
+<p><strong>Core:</strong> check the input path, import CSV, keep strengths below 5, and export <code>workspace/alerts.csv</code>. <strong>Power-up:</strong> add a calculated <code>Priority</code> property. <strong>Power-up:</strong> re-import the output and confirm its row count matches the exported alerts. <strong>Mission specialist:</strong> create a text summary with count, average strength, and generation time. <strong>Team-up:</strong> inspect raw CSV and identify header, row, delimiter, quoted value, and schema assumption.</p>
+<p>Calculated property:</p>
+<pre><code class="language-powershell">Select-Object Zone, @{ Name = &#39;Priority&#39;; Expression = {
+if ([int]$_.Strength -le 2) { &#39;High&#39; } else { &#39;Medium&#39; }
+} }</code></pre>
+<h2 id="tests-and-safety">Tests and safety</h2>
+<p>Test an empty data file, one row, no alerts, missing <code>Strength</code>, non-numeric strength, and a destination that already exists. Use invented data only. Never execute an unknown downloaded file merely because it arrived beside a trusted CSV.</p>
+<p>Encoding controls how characters become bytes. Windows PowerShell 5.1 and newer tools can have different defaults, so specify encoding when a receiving system requires one and test non-ASCII names if they are allowed.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You can explain persistence, build a script-relative path, describe a CSV schema, convert imported types, and verify an export by reading it back.</p>
+<h2 id="bonus-bite-inspect-a-git-diff">Bonus bite — Inspect a Git diff</h2>
+<pre><code class="language-powershell">git status
+git diff -- lessons/07-files/challenge/starter.ps1
+git diff --word-diff</code></pre>
+<p>Review generated files before committing and keep private data out of Git.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<p>Why should a program re-import an exported report during testing?</p>
+<p><strong>Previous:</strong> <a href="../06-functions/index.html">Lesson 6</a> &#183; <strong>Next:</strong> <a href="../08-errors/index.html">Safe Operations</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 **Mission:** Turn calculations and rules into a reusable toolkit.<br>
 **Learn:** functions, parameters, defaults, validation, output streams, structured results, scope, composition, and simple tests.<br>
-**Recharge:** a loop repeats now; a function packages behavior to call whenever it is needed.
+**Recharge:** a loop repeats now; a function packages behaviour to call whenever it is needed.
 
 ## Flight plan
 
@@ -82,7 +82,7 @@ Run `examples/mission-tools.ps1` and identify which function calculates, which d
 
 ## Simple tests
 
-A test compares expected and actual behavior:
+A test compares expected and actual behaviour:
 
 ```powershell
 $actual = ConvertTo-TravelMinutes -DistanceKm 12 -SpeedKmh 24
@@ -104,4 +104,3 @@ A project README should state purpose, requirements, how to run it, expected inp
 Why is returning data usually more reusable than displaying it inside every function?
 
 **Previous:** [Lesson 5](../05-collections/README.md) · **Next:** [Clue Files](../07-files/README.md)
-

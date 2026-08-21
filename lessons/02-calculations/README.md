@@ -197,7 +197,7 @@ Use starting energy `100`, energy per minute `4`, and boost cost `0` for these t
 | Scenario | Minutes | Energy used | Raw remaining | Why test it? |
 |---|---:|---:|---:|---|
 | No use | 0 | 0 | 100 | lower boundary |
-| Normal mission | 10 | 40 | 60 | typical behavior |
+| Normal mission | 10 | 40 | 60 | typical behaviour |
 | Exactly empty | 25 | 100 | 0 | exact boundary |
 | Too long | 30 | 120 | −20 | reveals need for clamping |
 
@@ -245,4 +245,3 @@ Use the up arrow to rerun the advanced solution with one parameter changed. This
 2. Why might a programmer store part of a calculation in an intermediate variable?
 
 **Previous:** [Lesson 1](../01-welcome/README.md) · **Next:** [Mission Decisions](../03-decisions/README.md)
-

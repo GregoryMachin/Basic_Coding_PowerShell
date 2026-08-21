@@ -15,7 +15,7 @@ Finishing a smaller reliable level is success. Students should complete levels i
 | 15–32 | Complete the **Ready** level |
 | 32–44 | Attempt the **Operational** level |
 | 44–52 | Test normal, boundary, and invalid paths |
-| 52–56 | Pair review and improve one behavior/message |
+| 52–56 | Pair review and improve one behaviour/message |
 | 56–58 | Publish bonus |
 | 58–60 | Demo and reflection |
 
@@ -41,7 +41,7 @@ Complete:
 | Decisions | validation and menu routing |
 | Loops | keep showing the menu |
 | Collections/objects | mission records |
-| Functions | view, summarize, create, load, save |
+| Functions | view, summarise, create, load, save |
 | Files | persistent CSV log |
 | Error handling | safe load/save and invalid input |
 | JSON | optional export |
@@ -53,7 +53,7 @@ The completed reference separates three responsibilities:
 ```text
 Interface (prompts/menu)
         ↓ calls
-Logic (create, summarize, identify)
+Logic (create, summarise, identify)
         ↓ reads/writes
 Storage (CSV or optional JSON)
 ```
@@ -143,7 +143,7 @@ Record actual output as well as pass/fail.
 | Persistence | add, quit, restart | record remains |
 | Quit | `Q` | save and friendly close |
 
-The completed reference includes lightweight automated tests in `final-project/tests`. Its `Assert-Equal` helper throws when actual behavior differs from expected behavior.
+The completed reference includes lightweight automated tests in `final-project/tests`. Its `Assert-Equal` helper throws when actual behaviour differs from expected behaviour.
 
 ## Reading the completed reference
 
@@ -159,15 +159,14 @@ Students do not need to reproduce every construct to complete the Ready or Opera
 
 ## Review and rubric
 
-Use 20 points: correct behavior 8, appropriate concepts 5, clarity 3, testing 2, explanation/demo 2. Prefer a small dependable application the author understands over a large copied application.
+Use 20 points: correct behaviour 8, appropriate concepts 5, clarity 3, testing 2, explanation/demo 2. Prefer a small dependable application the author understands over a large copied application.
 
 ## Bonus bite — Publish responsibly
 
-Review `git diff`, run `scripts/Test-Course.ps1`, and check for secrets/private data. If class policy allows, commit on a focused branch and open a pull request explaining behavior and tests.
+Review `git diff`, run `scripts/Test-Course.ps1`, and check for secrets/private data. If class policy allows, commit on a focused branch and open a pull request explaining behaviour and tests.
 
 ## Final reflection
 
 Explain one design choice, one bug you investigated, one test that changed your thinking, and one feature you would build next.
 
 **Previous:** [Lesson 9](../09-data/README.md) · **Course home:** [README](../../README.md)
-

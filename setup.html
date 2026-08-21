@@ -1,0 +1,82 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Prepare Windows and VS Code for Signal Academy.">
+  <title>Setup and troubleshooting | Signal Academy</title>
+  <link rel="stylesheet" href="assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="setup.html">Setup</a>
+      <a href="references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      
+      <article class="lesson-content">
+        <h1 id="setup-and-troubleshooting">Setup and troubleshooting</h1>
+<h2 id="student-setup">Student setup</h2>
+<h3 id="1-check-powershell">1. Check PowerShell</h3>
+<p>Open the Start menu, search for <strong>Windows PowerShell</strong>, and run:</p>
+<pre><code class="language-powershell">$PSVersionTable.PSVersion</code></pre>
+<p>The first number should be <code>5</code> or higher. This course is tested with Windows PowerShell 5.1.</p>
+<h3 id="2-install-vs-code">2. Install VS Code</h3>
+<p>Download VS Code from &lt;https://code.visualstudio.com/&gt;. In VS Code:</p>
+<ol>
+<li>Select the Extensions icon.</li>
+<li>Search for <strong>PowerShell</strong> by Microsoft.</li>
+<li>Select <strong>Install</strong>.</li>
+<li>Use <strong>File &gt; Open Folder</strong> to open the extracted course folder.</li>
+</ol>
+<h3 id="3-open-the-terminal">3. Open the terminal</h3>
+<p>Use <strong>Terminal &gt; New Terminal</strong>. If the prompt does not say PowerShell, use the arrow beside the plus button and choose <strong>Windows PowerShell</strong>.</p>
+<h3 id="4-run-a-script">4. Run a script</h3>
+<p>From the repository root:</p>
+<pre><code class="language-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\lessons\01-welcome\examples\hero-id.ps1</code></pre>
+<p>For an interactive script, use the same pattern and answer its prompts.</p>
+<h2 id="common-problems">Common problems</h2>
+<h3 id="running-scripts-is-disabled">“Running scripts is disabled”</h3>
+<p>Use the course command shown above. It launches a child PowerShell process with a temporary bypass. Do not change a school computer&#39;s permanent policy without permission.</p>
+<h3 id="the-term-is-not-recognized">“The term ... is not recognized”</h3>
+<p>Check spelling and confirm the terminal is in the repository root:</p>
+<pre><code class="language-powershell">Get-Location
+Get-ChildItem</code></pre>
+<p>Change location with quotes if the path contains spaces:</p>
+<pre><code class="language-powershell">Set-Location &quot;C:\path\to\Signal Academy&quot;</code></pre>
+<h3 id="the-terminal-is-waiting-and-appears-frozen">The terminal is waiting and appears frozen</h3>
+<p>The script may be waiting for <code>Read-Host</code> input. Read the last prompt and type an answer. Press <code>Ctrl+C</code> to stop a running script safely.</p>
+<h3 id="strange-quotation-marks-or-dash-errors">Strange quotation marks or dash errors</h3>
+<p>Code needs straight quotes (<code>&quot;</code>) and normal hyphens (<code>-</code>). Retype characters copied from a formatted document.</p>
+<h3 id="reset-generated-lesson-data">Reset generated lesson data</h3>
+<p>Lesson scripts write only inside their lesson folders or the system temporary folder. Delete generated <code>.csv</code>, <code>.json</code>, or <code>.txt</code> files named in the lesson and rerun the starter script.</p>
+<h2 id="optional-git-setup">Optional Git setup</h2>
+<p>Git is not included with every Windows installation. Ask a teacher/guardian before installing it. Check with:</p>
+<pre><code class="language-powershell">git --version</code></pre>
+<p>If it is installed, set a non-sensitive display name and email appropriate for the class environment. Never commit passwords, API keys, home addresses, or other private data.</p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="assets/course.js"></script>
+</body>
+</html>

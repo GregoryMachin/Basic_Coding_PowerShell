@@ -1,0 +1,285 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Boolean logic and branching">
+  <title>Mission Decisions | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a aria-current="page" class="active" href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 3 of 10</p><p>Boolean logic and branching</p></div>
+  <a href="../../Images/Final%20images/PowerShell-IF-Statements.png"><img src="../../Images/Final%20images/PowerShell-IF-Statements.png" alt="PowerShell reference for Mission Decisions"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-3-mission-decisions">Lesson 3 — Mission Decisions</h1>
+<p><strong>Mission:</strong> Build an interactive system that recommends a safe response. <strong>Learn:</strong> Boolean expressions, comparisons, compound conditions, branch order, decision tables, and boundary testing. <strong>Recharge:</strong> calculations create values; comparisons turn values into <code>$true</code> or <code>$false</code>.</p>
+<h2 id="60-minute-flight-plan">60-minute flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–8</td>
+<td>Compare values and inspect Boolean results</td>
+</tr>
+<tr>
+<td>8–18</td>
+<td>Translate a decision table into conditions</td>
+</tr>
+<tr>
+<td>18–30</td>
+<td>Guided interactive mission selector</td>
+</tr>
+<tr>
+<td>30–44</td>
+<td>Weather-check challenge</td>
+</tr>
+<tr>
+<td>44–52</td>
+<td>Boundary and conflicting-condition tests</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: first Git snapshot</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="from-questions-to-booleans">From questions to Booleans</h2>
+<p>A condition is an expression whose result is <code>$true</code> or <code>$false</code>:</p>
+<pre><code class="language-powershell">[int]$risk = 6
+$isHighRisk = $risk -ge 8
+Write-Host $isHighRisk # False</code></pre>
+<div class="table-wrap"><table><thead><tr>
+<th>Operator</th>
+<th>Question</th>
+<th>Example</th>
+</tr></thead><tbody>
+<tr>
+<td><code>-eq</code></td>
+<td>equal?</td>
+<td><code>$status -eq &#39;Active&#39;</code></td>
+</tr>
+<tr>
+<td><code>-ne</code></td>
+<td>not equal?</td>
+<td><code>$status -ne &#39;Complete&#39;</code></td>
+</tr>
+<tr>
+<td><code>-gt</code> / <code>-ge</code></td>
+<td>greater than / at least?</td>
+<td><code>$risk -ge 8</code></td>
+</tr>
+<tr>
+<td><code>-lt</code> / <code>-le</code></td>
+<td>less than / at most?</td>
+<td><code>$wind -le 30</code></td>
+</tr>
+</tbody></table></div>
+<p>PowerShell string comparisons are case-insensitive by default. Numeric comparisons should use numeric values, not numeric-looking strings.</p>
+<h2 id="combining-conditions">Combining conditions</h2>
+<pre><code class="language-powershell">$launch = ($wind -le 30) -and (-not $lightning)</code></pre>
+<div class="table-wrap"><table><thead><tr>
+<th>A</th>
+<th>B</th>
+<th><code>A -and B</code></th>
+<th><code>A -or B</code></th>
+</tr></thead><tbody>
+<tr>
+<td><code>$false</code></td>
+<td><code>$false</code></td>
+<td><code>$false</code></td>
+<td><code>$false</code></td>
+</tr>
+<tr>
+<td><code>$false</code></td>
+<td><code>$true</code></td>
+<td><code>$false</code></td>
+<td><code>$true</code></td>
+</tr>
+<tr>
+<td><code>$true</code></td>
+<td><code>$false</code></td>
+<td><code>$false</code></td>
+<td><code>$true</code></td>
+</tr>
+<tr>
+<td><code>$true</code></td>
+<td><code>$true</code></td>
+<td><code>$true</code></td>
+<td><code>$true</code></td>
+</tr>
+</tbody></table></div>
+<p><code>-not</code> reverses one Boolean value. PowerShell also short-circuits: with <code>-and</code>, it does not evaluate the second condition when the first is already false; with <code>-or</code>, it stops once a condition is true.</p>
+<h2 id="decision-tables-before-code">Decision tables before code</h2>
+<p>Write rules in a table so people can review them before translating them:</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Risk</th>
+<th>People nearby</th>
+<th>Response</th>
+</tr></thead><tbody>
+<tr>
+<td>8–10</td>
+<td>Yes</td>
+<td>Full response team</td>
+</tr>
+<tr>
+<td>4–10</td>
+<td>Any other case</td>
+<td>Scout team</td>
+</tr>
+<tr>
+<td>0–3</td>
+<td>Any</td>
+<td>Remote monitoring</td>
+</tr>
+</tbody></table></div>
+<p>Test the most specific or demanding rule first:</p>
+<pre><code class="language-powershell">if ($risk -ge 8 -and $peopleNearby) {
+$response = &#39;Full response team&#39;
+$reason = &#39;High risk with people nearby&#39;
+}
+elseif ($risk -ge 4) {
+$response = &#39;Scout team&#39;
+$reason = &#39;Moderate or high risk&#39;
+}
+else {
+$response = &#39;Remote monitoring&#39;
+$reason = &#39;Low reported risk&#39;
+}</code></pre>
+<p>If <code>$risk -ge 4</code> appeared first, risk 9 would never reach the high-risk branch. Returning a reason makes the decision easier to inspect.</p>
+<h2 id="guided-build">Guided build</h2>
+<p>Run <code>examples/mission-selector.ps1</code>. Enter risk and whether people are nearby, then rerun it with a boundary value.</p>
+<pre><code class="language-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\lessons\03-decisions\examples\mission-selector.ps1</code></pre>
+<p>For now, enter the requested kind of value. Lesson 8 adds robust input validation.</p>
+<h2 id="challenge-weather-launch-check">Challenge — Weather launch check</h2>
+<p>Open <code>challenge/starter.ps1</code> and implement this decision table:</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Lightning</th>
+<th>Wind</th>
+<th>Visibility</th>
+<th>Result</th>
+</tr></thead><tbody>
+<tr>
+<td>Yes</td>
+<td>Any</td>
+<td>Any</td>
+<td><code>DO NOT LAUNCH</code></td>
+</tr>
+<tr>
+<td>No</td>
+<td>Above 60</td>
+<td>Any</td>
+<td><code>DO NOT LAUNCH</code></td>
+</tr>
+<tr>
+<td>No</td>
+<td>Any</td>
+<td>Below 5 km</td>
+<td><code>DO NOT LAUNCH</code></td>
+</tr>
+<tr>
+<td>No</td>
+<td>31–60</td>
+<td>At least 5 km</td>
+<td><code>CAUTION</code></td>
+</tr>
+<tr>
+<td>No</td>
+<td>0–30</td>
+<td>At least 5 km</td>
+<td><code>CLEAR</code></td>
+</tr>
+</tbody></table></div>
+<p><strong>Core:</strong> produce the correct status and a short reason. <strong>Power-up:</strong> calculate <code>$needsReview</code> using one compound Boolean expression. <strong>Mission specialist:</strong> add a <code>switch</code>-based recommendation for a separate text mission type such as <code>Rescue</code>, <code>Survey</code>, or <code>Delivery</code>. <strong>Team-up:</strong> one student supplies a test row while the other predicts the first matching branch. Swap roles.</p>
+<p>The interactive solution mirrors the starter. The advanced solution uses repeatable script parameters and validation attributes; these are formally developed later.</p>
+<h2 id="test-table">Test table</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Lightning</th>
+<th>Wind</th>
+<th>Visibility</th>
+<th>Expected</th>
+</tr></thead><tbody>
+<tr>
+<td>No</td>
+<td>30</td>
+<td>5</td>
+<td><code>CLEAR</code></td>
+</tr>
+<tr>
+<td>No</td>
+<td>31</td>
+<td>5</td>
+<td><code>CAUTION</code></td>
+</tr>
+<tr>
+<td>No</td>
+<td>60</td>
+<td>5</td>
+<td><code>CAUTION</code></td>
+</tr>
+<tr>
+<td>No</td>
+<td>61</td>
+<td>10</td>
+<td><code>DO NOT LAUNCH</code></td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>10</td>
+<td>10</td>
+<td><code>DO NOT LAUNCH</code></td>
+</tr>
+<tr>
+<td>No</td>
+<td>10</td>
+<td>4</td>
+<td><code>DO NOT LAUNCH</code></td>
+</tr>
+</tbody></table></div>
+<p>Boundary tests answer whether rules include or exclude their endpoints. Conflicting-condition tests confirm that the most important rule wins.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You can explain how a comparison produces a Boolean, combine conditions, translate a table into ordered branches, and justify a boundary test.</p>
+<h2 id="bonus-bite-your-first-git-snapshot">Bonus bite — Your first Git snapshot</h2>
+<pre><code class="language-powershell">git status
+git add lessons/03-decisions/challenge/starter.ps1
+git commit -m &quot;Complete weather launch check&quot;</code></pre>
+<p>A commit is a local named snapshot, not automatically a cloud upload. Review <code>git status</code> first and follow class identity/privacy policy.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<p>Why should the most specific or highest-priority condition usually appear first?</p>
+<p><strong>Previous:</strong> <a href="../02-calculations/index.html">Lesson 2</a> &#183; <strong>Next:</strong> <a href="../04-loops/index.html">Patrol Patterns</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

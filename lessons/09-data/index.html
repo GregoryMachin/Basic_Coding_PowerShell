@@ -1,0 +1,124 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JSON, trustworthy data, and sorting">
+  <title>City Data Network | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a aria-current="page" class="active" href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 9 of 10</p><p>JSON, trustworthy data, and sorting</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Export-and-Import.png"><img src="../../Images/Final%20images/PowerShell-Export-and-Import.png" alt="PowerShell reference for City Data Network"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-9-city-data-network">Lesson 9 — City Data Network</h1>
+<p><strong>Mission:</strong> Turn nested JSON into a trustworthy status dashboard. <strong>Learn:</strong> JSON structure, object mapping, nested properties, conversion depth, schema checks, timestamps, freshness, and safe web-service patterns. <strong>Recharge:</strong> CSV represents repeated rows; JSON can represent nested objects and arrays.</p>
+<h2 id="flight-plan">Flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–10</td>
+<td>Map JSON syntax to PowerShell values</td>
+</tr>
+<tr>
+<td>10–22</td>
+<td>Navigate nested status data</td>
+</tr>
+<tr>
+<td>22–32</td>
+<td>Filter, sort, and summarise</td>
+</tr>
+<tr>
+<td>32–45</td>
+<td>Dispatch-shortlist challenge</td>
+</tr>
+<tr>
+<td>45–52</td>
+<td>Validate fields and freshness</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: GitHub collaboration</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="json-anatomy">JSON anatomy</h2>
+<ul>
+<li><code>{}</code> contains an object with named properties.</li>
+<li><code>[]</code> contains an ordered array.</li>
+<li>Strings use quotes; numbers and Booleans do not.</li>
+<li>Objects may contain nested objects and arrays.</li>
+</ul>
+<pre><code class="language-powershell">$city = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
+$firstZone = $city.zones[0]
+Write-Host $firstZone.name
+Write-Host $firstZone.lead.name</code></pre>
+<p><code>ConvertFrom-Json</code> maps JSON objects to PowerShell objects and arrays to collections. <code>ConvertTo-Json</code> performs the reverse operation. Use sufficient <code>-Depth</code> when exporting nested objects; otherwise deeper values may be abbreviated.</p>
+<h2 id="csv-or-json">CSV or JSON?</h2>
+<p>CSV is compact and convenient when every record has the same flat columns. JSON is better when records contain nested structures or different kinds of values. Neither format proves that the data is correct or safe.</p>
+<h2 id="trust-but-verify">Trust but verify</h2>
+<p>Before using external or local data, ask:</p>
+<ul>
+<li>Does the expected property exist?</li>
+<li>Is its value the expected type and range?</li>
+<li>When was the snapshot updated?</li>
+<li>What should happen when it is missing or malformed?</li>
+<li>Who produced the data, and is that source appropriate?</li>
+</ul>
+<p>Parse a timestamp deliberately:</p>
+<pre><code class="language-powershell">[datetimeoffset]$updated = $city.updated
+$age = [datetimeoffset]::Now - $updated</code></pre>
+<h2 id="guided-build">Guided build</h2>
+<p>Run <code>examples/status-dashboard.ps1</code>. Trace one zone from raw JSON through sorting, property selection, and formatted output. Add a count and identify the highest alert.</p>
+<h2 id="challenge-dispatch-shortlist">Challenge — Dispatch shortlist</h2>
+<p><strong>Core:</strong> load JSON, keep alert level 3 or higher, sort descending, and display name, alert level, lead name, and channel. <strong>Power-up:</strong> calculate total zones, high-alert count, and highest-alert zone. <strong>Power-up:</strong> verify <code>city</code>, <code>updated</code>, and <code>zones</code> exist and every alert level is 0–5. <strong>Power-up:</strong> calculate snapshot age and warn when it exceeds a chosen limit. <strong>Mission specialist:</strong> export the shortlist with <code>ConvertTo-Json -Depth 4</code>, read it back, and compare counts. <strong>Team-up:</strong> alter a copied snapshot, predict the output, and identify whether the change is valid, stale, or malformed.</p>
+<h2 id="optional-web-service-extension">Optional web-service extension</h2>
+<p>An API commonly returns JSON through HTTP. Concepts include endpoint, <code>GET</code>, status code, timeout, and authentication. If a teacher supplies an approved endpoint, fetch with <code>Invoke-RestMethod</code>, validate the result, and fall back to the versioned local snapshot. Never embed passwords or API keys in course code or public Git history.</p>
+<p>The main lesson remains local so it is repeatable, private, and available offline.</p>
+<h2 id="tests">Tests</h2>
+<p>Try missing <code>zones</code>, an empty array, alert <code>9</code>, missing lead, invalid timestamp, and one-element shortlist. Check both what the program displays and whether exported JSON can be imported again.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You can navigate nested JSON, choose JSON versus CSV, explain <code>-Depth</code>, validate required fields, and describe a safe local fallback.</p>
+<h2 id="bonus-bite-github-collaboration">Bonus bite — GitHub collaboration</h2>
+<p>An issue describes work; a pull request proposes a reviewable change. Use a focused branch, link the issue, explain tests, and review behaviour rather than the person. Follow class policy before creating accounts or pushing data.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<p>Why can syntactically valid JSON still be unsafe or unsuitable for a program?</p>
+<p><strong>Previous:</strong> <a href="../08-errors/index.html">Lesson 8</a> &#183; <strong>Next:</strong> <a href="../10-command-centre/index.html">Hero Command Centre</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

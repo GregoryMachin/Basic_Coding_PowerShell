@@ -1,0 +1,127 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Functions, parameters, and testing">
+  <title>Reusable Mission Tools | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a aria-current="page" class="active" href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 6 of 10</p><p>Functions, parameters, and testing</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Functions-Quick-Guide-v2.png"><img src="../../Images/Final%20images/PowerShell-Functions-Quick-Guide-v2.png" alt="PowerShell reference for Reusable Mission Tools"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-6-reusable-mission-tools">Lesson 6 — Reusable Mission Tools</h1>
+<p><strong>Mission:</strong> Turn calculations and rules into a reusable toolkit. <strong>Learn:</strong> functions, parameters, defaults, validation, output streams, structured results, scope, composition, and simple tests. <strong>Recharge:</strong> a loop repeats now; a function packages behaviour to call whenever it is needed.</p>
+<h2 id="flight-plan">Flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–10</td>
+<td>Name, define, and call a function</td>
+</tr>
+<tr>
+<td>10–20</td>
+<td>Design typed parameters and output</td>
+</tr>
+<tr>
+<td>20–30</td>
+<td>Compose two functions</td>
+</tr>
+<tr>
+<td>30–44</td>
+<td>Mission-toolkit challenge</td>
+</tr>
+<tr>
+<td>44–52</td>
+<td>Test normal, boundary, and invalid calls</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: useful README instructions</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="function-anatomy">Function anatomy</h2>
+<pre><code class="language-powershell">function Get-MissionScore {
+param(
+[int]$PeopleHelped,
+[int]$Minutes
+)
+($PeopleHelped * 10) - $Minutes
+}
+
+$score = Get-MissionScore -PeopleHelped 8 -Minutes 20</code></pre>
+<p>PowerShell prefers approved verb-noun names such as <code>Get-</code>, <code>Test-</code>, and <code>ConvertTo-</code>. <code>Get-Verb</code> lists approved verbs. Script parameters and function parameters use the same <code>param()</code> syntax, but function parameters receive values for one function call.</p>
+<h2 id="designing-parameters">Designing parameters</h2>
+<p>Parameters can have a type, default, requirement, and validation rule:</p>
+<pre><code class="language-powershell">param(
+[Parameter(Mandatory = $true)]
+[ValidateRange(0, 100)]
+[int]$BatteryPercent,
+
+[int]$TeamSize = 2
+)</code></pre>
+<p>Mandatory and validation failures occur before the function body begins. Use friendly interactive validation when the program should let a user retry.</p>
+<h2 id="powershell-function-output">PowerShell function output</h2>
+<p>Every value written to PowerShell&#39;s success stream becomes function output; <code>return</code> is not required:</p>
+<pre><code class="language-powershell">function Get-Double { param([int]$Number); $Number * 2 }</code></pre>
+<p>This also means an accidental command result can become unwanted output. Use <code>Out-Null</code>, assign the result, or <code>[void]</code> when a helper command should not return data. Prefer returning data and letting the caller decide how to display it.</p>
+<p>Return one structured object when several related results belong together:</p>
+<pre><code class="language-powershell">[pscustomobject]@{ Minutes = 30; Ready = $true; Reason = &#39;Checks passed&#39; }</code></pre>
+<h2 id="scope-and-composition">Scope and composition</h2>
+<p>Variables created inside a function normally belong to that function&#39;s local scope. Avoid changing global variables invisibly; accept input through parameters and return output instead.</p>
+<p>A function can call another function. Small functions composed together are easier to explain and test than one large function that reads input, calculates, saves, and displays everything.</p>
+<p>Run <code>examples/mission-tools.ps1</code> and identify which function calculates, which decides, and which combines their results.</p>
+<h2 id="challenge-distance-and-readiness-toolkit">Challenge — Distance and readiness toolkit</h2>
+<p><strong>Core:</strong> finish <code>ConvertTo-TravelMinutes</code> and <code>Test-MissionReady</code>, then call both. <strong>Power-up:</strong> add <code>[ValidateRange()]</code> rules that prevent zero speed and impossible percentages. <strong>Power-up:</strong> create <code>New-MissionPlan</code> that calls both helpers and returns a custom object. <strong>Mission specialist:</strong> add comment-based help or <code>[CmdletBinding()]</code> and inspect the function with <code>Get-Help</code>. <strong>Team-up:</strong> write three calls before coding and predict their exact outputs.</p>
+<h2 id="simple-tests">Simple tests</h2>
+<p>A test compares expected and actual behaviour:</p>
+<pre><code class="language-powershell">$actual = ConvertTo-TravelMinutes -DistanceKm 12 -SpeedKmh 24
+if ($actual -ne 30) { throw &quot;Expected 30, got $actual&quot; }</code></pre>
+<p>Test zero distance, fractional distance, the minimum ready battery, one-person team, and invalid zero speed. A good test failure explains what was expected and why.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You can describe parameters and output, avoid accidental output, explain local scope, compose functions, and write one repeatable test.</p>
+<h2 id="bonus-bite-write-a-useful-readme">Bonus bite — Write a useful README</h2>
+<p>A project README should state purpose, requirements, how to run it, expected input/output, and help. Add a short “How to run” section and preview Markdown with <code>Ctrl+Shift+V</code>.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<p>Why is returning data usually more reusable than displaying it inside every function?</p>
+<p><strong>Previous:</strong> <a href="../05-collections/index.html">Lesson 5</a> &#183; <strong>Next:</strong> <a href="../07-files/index.html">Clue Files</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

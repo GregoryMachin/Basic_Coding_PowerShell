@@ -28,6 +28,15 @@ Write-Host $skills.Count
 
 Arrays answer “which item is at this position?” Positions begin at zero.
 
+Use an array when you need an ordered list. Add an item by creating a new array, and loop over the items with `foreach`:
+
+```powershell
+$skills += 'Communications'
+foreach ($skill in $skills) {
+    Write-Host $skill
+}
+```
+
 ### Hashtable: values by key
 
 ```powershell
@@ -36,6 +45,17 @@ Write-Host $hero['Name']
 ```
 
 Hashtables are flexible key/value lookups. They are useful for settings and quick records, but property order and display are not their main purpose.
+
+Keys must be unique. Add or update a value with its key, and test for a key before relying on it:
+
+```powershell
+$hero['Available'] = $true
+if ($hero.ContainsKey('Level')) {
+    Write-Host "Level: $($hero['Level'])"
+}
+```
+
+Choose an array when order matters and a hashtable when a meaningful key should retrieve a value. For a roster containing several consistent records, place custom objects inside an array.
 
 ### Custom object: a consistent record
 
@@ -84,7 +104,7 @@ Add one consistent property, such as `Available`, to every object and update the
 
 ## Challenge — Build and query a roster
 
-**Core:** add a third member, filter level 3 or higher, sort descending, and select a suggested lead.<br>
+**Core:** add a third member, filter level 3 or higher, sort by level descending and then name ascending, and select a suggested lead.<br>
 **Power-up:** require both sufficient level and availability.<br>
 **Power-up:** group members by skill and display each group count.<br>
 **Mission specialist:** calculate average level and create a calculated `Readiness` property.<br>
@@ -119,4 +139,3 @@ On older Git use `git checkout -b roster-experiment`. Commit before switching br
 Why is an array of consistent custom objects useful for a roster?
 
 **Previous:** [Lesson 4](../04-loops/README.md) · **Next:** [Reusable Mission Tools](../06-functions/README.md)
-

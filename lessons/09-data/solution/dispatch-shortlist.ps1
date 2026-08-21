@@ -17,7 +17,8 @@ $shortlist = $city.zones |
 $shortlist | Select-Object name, alertLevel, @{ Name = 'Lead'; Expression = { $_.lead.name } },
     @{ Name = 'Channel'; Expression = { $_.lead.channel } } |
     Format-Table -AutoSize
-$shortlist | ConvertTo-Json -Depth 4 | Set-Content -Path $outputPath
+$shortlistJson = ConvertTo-Json -InputObject @($shortlist) -Depth 4
+$shortlistJson | Set-Content -Path $outputPath
 $roundTrip = @(Get-Content $outputPath -Raw | ConvertFrom-Json)
 [datetimeoffset]$updated = $city.updated
 $ageDays = [Math]::Floor(([datetimeoffset]::Now - $updated).TotalDays)

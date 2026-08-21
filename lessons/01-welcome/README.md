@@ -65,8 +65,6 @@ A value's **type** tells PowerShell what kind of data it represents and what ope
 | Integer (`[int]`) | `12` | whole numbers and counters |
 | Decimal (`[double]`) | `7.5` | measurements and calculations with fractions |
 | Boolean (`[bool]`) | `$true` | yes/no or on/off states |
-| Array (`[array]`) | `@('Map', 'Beacon')` | an ordered collection of values |
-| Hashtable (`[hashtable]`) | `@{ Name = 'Nova'; Level = 2 }` | related values accessed by a key |
 
 ### String: text
 
@@ -110,33 +108,6 @@ A Boolean stores one of two values: `$true` or `$false`. Use it for questions wi
 
 Do not put quotes around `$true` or `$false`; quoted values are strings instead of Booleans.
 
-### Array: an ordered collection
-
-An array stores several values under one variable name. Use an array when a program needs a list, such as equipment, districts, or team members. The items remain in order and can be processed one at a time with a loop.
-
-```powershell
-[array]$equipment = @('Map', 'Beacon', 'First-aid kit')
-Write-Host $equipment[0] # The first item is Map
-```
-
-Array positions start at zero, so `[0]` selects the first item, `[1]` the second, and so on. Lessons 4 and 5 explore loops and collections in more detail.
-
-### Hashtable: labelled values
-
-A hashtable stores pairs consisting of a unique key and its value. Use it when related values need meaningful labels—for example, one hero profile with a name, level, and skill. A key retrieves its corresponding value.
-
-```powershell
-[hashtable]$profile = @{
-    Name  = 'Nova Quill'
-    Level = 2
-    Skill = 'Navigation'
-}
-
-Write-Host $profile['Skill'] # Displays Navigation
-```
-
-An array answers “which item is at this position?” A hashtable answers “what value belongs to this key?” Lesson 5 develops these collection choices further.
-
 PowerShell can usually infer a type from the value:
 
 ```powershell
@@ -178,7 +149,7 @@ The first example uses **string interpolation** to insert variable values into a
 Text inside quotes is a **string**.
 
 - Double quotes replace `$heroName` with its value; single quotes display the characters literally.
-- `Write-Host` displays a message. Its console color is decoration, not the data itself.
+- `Write-Host` displays a message. Its console colour is decoration, not the data itself.
 
 Try `Write-Host 'Recruit: $heroName'`. Why is the result different?
 
@@ -208,14 +179,14 @@ Open `challenge/starter.ps1`. Replace every `TODO`, then run it.
 **Power-up:** ask for a numeric `$missionsCompleted`, calculate the next milestone, and display both values.<br>
 **Team-up:** swap files with a partner and identify the name, value, and type of each variable.
 
-Compare behavior with `solution/hero-card.ps1` only after your own attempt.
+Compare behaviour with `solution/hero-card.ps1` only after your own attempt.
 
 ## Checkpoint
 
 You are ready when you can:
 
 - explain what a variable stores;
-- name at least three common value types;
+- name the four value types introduced in this lesson;
 - combine strings and perform a calculation using variables;
 - collect input with `Read-Host`;
 - predict which line prints first;
@@ -228,7 +199,7 @@ You are ready when you can:
 3. Use ``Ctrl+` `` to show/hide the terminal.
 4. Use `Ctrl+/` to turn the current line into a comment.
 
-These shortcuts change editor speed, not program behavior.
+These shortcuts change editor speed, not program behaviour.
 
 ## Exit ticket
 

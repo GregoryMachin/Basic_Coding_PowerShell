@@ -6,7 +6,7 @@ Signal Academy teaches transferable programming ideas through Windows PowerShell
 
 PowerShell is the course vehicle rather than the final destination. It was chosen because Windows PowerShell is included with standard Windows 10 and 11 installations, requires little setup for the first lesson, and is supported by extensive Microsoft and community documentation. The teaching emphasis should remain on values, control flow, collections, decomposition, debugging, testing, and other concepts that transfer to additional programming languages.
 
-The course assumes no coding experience. Typing examples is encouraged: small typing errors become useful debugging practice. Students should work locally and need GitHub only when the class is ready to publish or collaborate.
+The course assumes no coding experience. Students work from the local HTML pages, starting with `index.html`, while scripts remain in the lesson folders. Typing examples is encouraged: small typing errors become useful debugging practice. Students should work locally and need GitHub only when the class is ready to publish or collaborate.
 
 ## Standard 60-minute rhythm
 
@@ -34,6 +34,8 @@ The bonus can be skipped without breaking the programming sequence. Challenges i
 
 Each lesson starts with a two-minute “recharge” that restates the needed concepts and provides a complete example. A learner can join late by running that lesson's example. The final project deliberately reuses patterns from all lessons.
 
+Lesson 1 now stays with strings, integers, doubles, and Booleans. Teach arrays, hashtables, and arrays of custom objects in Lesson 5, where students have already practised loops and can compare the structures through a roster task.
+
 ## Assessment
 
 Use the same four checks each week:
@@ -43,17 +45,21 @@ Use the same four checks each week:
 3. **Responds:** at least one input changes the result.
 4. **Explains:** the student can describe one choice they made.
 
-Suggested final rubric (20 points): correct behavior 8, use of programming concepts 5, clarity 3, testing 2, explanation/demo 2. Reward a small reliable program over a large copied one.
+Suggested final rubric (20 points): correct behaviour 8, use of programming concepts 5, clarity 3, testing 2, explanation/demo 2. Reward a small reliable program over a large copied one.
 
 ## Solutions and tests
 
-Challenge solutions are included for instructor support and self-checking. Encourage students to compare behavior before comparing code—multiple solutions can be correct.
+Challenge solutions are included for instructor support and self-checking. Encourage students to compare behaviour before comparing code—multiple solutions can be correct.
 
-From the repository root, verify all non-interactive reference scripts:
+From the repository root, rebuild the student HTML pages and verify all non-interactive reference scripts:
 
 ```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Build-StudentSite.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-StudentSite.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Course.ps1
 ```
+
+The course test runs copied scripts in a temporary folder, so verification does not overwrite students' generated lesson files.
 
 Interactive scripts are designed for manual testing because they teach input and validation.
 
@@ -62,9 +68,9 @@ Interactive scripts are designed for manual testing because they teach input and
 - Read code aloud as intent (“put the value 3 in attempts”) rather than punctuation alone.
 - Use paired roles: navigator explains; driver types; swap every 8–10 minutes.
 - Permit copy/paste for motor or spelling needs, then ask the learner to change one value and predict the result.
-- Avoid color as the only signal; scripts include text labels as well as console colors.
+- Avoid colour as the only signal; scripts include text labels as well as console colours.
 - Offer the extension tasks to fast finishers without making speed the measure of success.
 
 ## Before each class
 
-Run the course test, open the lesson example, and check that students start in the repository root. For lessons 7–10, confirm the supplied `data` folders are present. No administrator access or cloud service is required.
+Rebuild the HTML pages after changing lesson Markdown. Run the course test, open the lesson example, and check that students start at `index.html` with the repository root open in VS Code. For lessons 7–10, confirm the supplied `data` folders are present. No administrator access or cloud service is required.

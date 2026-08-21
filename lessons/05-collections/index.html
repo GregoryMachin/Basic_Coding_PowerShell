@@ -1,0 +1,148 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Arrays, hashtables, objects, and pipelines">
+  <title>Team Rosters | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a aria-current="page" class="active" href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 5 of 10</p><p>Arrays, hashtables, objects, and pipelines</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Pipeline.png"><img src="../../Images/Final%20images/PowerShell-Pipeline.png" alt="PowerShell reference for Team Rosters"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-5-team-rosters">Lesson 5 — Team Rosters</h1>
+<p><strong>Mission:</strong> Model a rescue team and query it fairly. <strong>Learn:</strong> arrays, hashtables, custom objects, properties, pipelines, filtering, sorting, selecting, grouping, and aggregation. <strong>Recharge:</strong> loops inspect items one at a time; collections keep related items together.</p>
+<h2 id="flight-plan">Flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–10</td>
+<td>Compare arrays, hashtables, and objects</td>
+</tr>
+<tr>
+<td>10–20</td>
+<td>Build consistent roster records</td>
+</tr>
+<tr>
+<td>20–32</td>
+<td>Trace objects through a pipeline</td>
+</tr>
+<tr>
+<td>32–45</td>
+<td>Roster-query challenge</td>
+</tr>
+<tr>
+<td>45–52</td>
+<td>Group, count, and review selection rules</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: Git branches</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="three-useful-structures">Three useful structures</h2>
+<h3 id="array-ordered-items">Array: ordered items</h3>
+<pre><code class="language-powershell">$skills = @(&#39;Navigation&#39;, &#39;First aid&#39;, &#39;Engineering&#39;)
+Write-Host $skills[0]
+Write-Host $skills.Count</code></pre>
+<p>Arrays answer “which item is at this position?” Positions begin at zero.</p>
+<p>Use an array when you need an ordered list. Add an item by creating a new array, and loop over the items with <code>foreach</code>:</p>
+<pre><code class="language-powershell">$skills += &#39;Communications&#39;
+foreach ($skill in $skills) {
+Write-Host $skill
+}</code></pre>
+<h3 id="hashtable-values-by-key">Hashtable: values by key</h3>
+<pre><code class="language-powershell">$hero = @{ Name = &#39;Patch&#39;; Level = 4 }
+Write-Host $hero[&#39;Name&#39;]</code></pre>
+<p>Hashtables are flexible key/value lookups. They are useful for settings and quick records, but property order and display are not their main purpose.</p>
+<p>Keys must be unique. Add or update a value with its key, and test for a key before relying on it:</p>
+<pre><code class="language-powershell">$hero[&#39;Available&#39;] = $true
+if ($hero.ContainsKey(&#39;Level&#39;)) {
+Write-Host &quot;Level: $($hero[&#39;Level&#39;])&quot;
+}</code></pre>
+<p>Choose an array when order matters and a hashtable when a meaningful key should retrieve a value. For a roster containing several consistent records, place custom objects inside an array.</p>
+<h3 id="custom-object-a-consistent-record">Custom object: a consistent record</h3>
+<pre><code class="language-powershell">$member = [pscustomobject]@{
+Name  = &#39;Patch&#39;
+Skill = &#39;First aid&#39;
+Level = 4
+}
+Write-Host $member.Skill</code></pre>
+<p>Use an array of custom objects for table-like records. Give every roster member the same properties so later commands can treat them consistently.</p>
+<h2 id="objects-through-a-pipeline">Objects through a pipeline</h2>
+<p>PowerShell&#39;s pipeline passes structured objects, not merely displayed text:</p>
+<pre><code class="language-powershell">$qualified = $roster |
+Where-Object { $_.Level -ge 3 } |
+Sort-Object Level -Descending</code></pre>
+<ul>
+<li><code>|</code> passes output to the next command.</li>
+<li><code>$_</code> is the current pipeline object inside the script block.</li>
+<li><code>Where-Object</code> keeps matching objects.</li>
+<li><code>Sort-Object</code> changes their order.</li>
+<li><code>Select-Object</code> chooses or calculates properties.</li>
+<li><code>Group-Object</code> groups equal property values.</li>
+<li><code>Measure-Object</code> counts or calculates numeric summaries.</li>
+</ul>
+<p>Keep <code>Format-Table</code> at the display boundary. Formatting instructions are difficult to filter, export, or calculate with afterward.</p>
+<h2 id="guided-build">Guided build</h2>
+<p>Run <code>examples/rescue-roster.ps1</code>. Pause after each pipeline stage and inspect:</p>
+<pre><code class="language-powershell">$roster
+$qualified
+$qualified | Select-Object Name, Skill, Level</code></pre>
+<p>Add one consistent property, such as <code>Available</code>, to every object and update the filter.</p>
+<h2 id="challenge-build-and-query-a-roster">Challenge — Build and query a roster</h2>
+<p><strong>Core:</strong> add a third member, filter level 3 or higher, sort by level descending and then name ascending, and select a suggested lead. <strong>Power-up:</strong> require both sufficient level and availability. <strong>Power-up:</strong> group members by skill and display each group count. <strong>Mission specialist:</strong> calculate average level and create a calculated <code>Readiness</code> property. <strong>Team-up:</strong> design a selection rule, then list important information the data does not capture. A program can apply a rule consistently without proving that the rule is fair.</p>
+<p>Calculated property pattern:</p>
+<pre><code class="language-powershell">$roster | Select-Object Name, @{ Name = &#39;Readiness&#39;; Expression = { $_.Level * 20 } }</code></pre>
+<h2 id="tests">Tests</h2>
+<p>Try no matching members, tied levels, one unavailable high-level member, and a missing skill. Decide whether <code>Select-Object -First 1</code> needs a tie-breaking rule.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You can choose a collection type, access an item/property, explain <code>$_</code>, trace a multi-stage pipeline, and keep formatting at the end.</p>
+<h2 id="bonus-bite-safe-experiments-with-branches">Bonus bite — Safe experiments with branches</h2>
+<pre><code class="language-powershell">git status
+git switch -c roster-experiment
+git branch</code></pre>
+<p>On older Git use <code>git checkout -b roster-experiment</code>. Commit before switching branches, and merge only with teacher guidance.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<p>Why is an array of consistent custom objects useful for a roster?</p>
+<p><strong>Previous:</strong> <a href="../04-loops/index.html">Lesson 4</a> &#183; <strong>Next:</strong> <a href="../06-functions/index.html">Reusable Mission Tools</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

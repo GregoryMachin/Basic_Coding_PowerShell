@@ -6,7 +6,7 @@ $roster = @(
 )
 
 $qualified = $roster | Where-Object { $_.Level -ge 3 -and $_.Available }
-$ranked = $qualified | Sort-Object Level, Name -Descending
+$ranked = $qualified | Sort-Object @{ Expression = 'Level'; Descending = $true }, Name
 
 Write-Host '=== AVAILABLE QUALIFIED TEAM ===' -ForegroundColor Green
 $ranked | Format-Table -AutoSize
@@ -17,4 +17,3 @@ $roster | Group-Object Skill | Sort-Object Count -Descending |
 
 $average = ($roster | Measure-Object Level -Average).Average
 Write-Host ('Average roster level: {0:N1}' -f $average)
-

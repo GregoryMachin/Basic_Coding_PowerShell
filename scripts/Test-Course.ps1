@@ -31,17 +31,29 @@ $scripts = Get-ChildItem -Path (Join-Path $repoRoot 'lessons') -Recurse -Filter 
 $scripts += Get-ChildItem -Path (Join-Path $repoRoot 'final-project') -Recurse -Filter '*.ps1' |
     Where-Object { $_.Name -notin @('Command-Centre.ps1', 'starter.ps1') }
 
-foreach ($script in $scripts) {
-    Write-Host "Testing $($script.FullName.Substring($repoRoot.Length + 1))" -ForegroundColor Cyan
-    try {
-        & $script.FullName *> $null
-        if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
-            throw "Exited with code $LASTEXITCODE"
+$testRoot = Join-Path ([System.IO.Path]::GetTempPath()) ('signal-academy-course-' + [guid]::NewGuid())
+try {
+    New-Item -ItemType Directory -Path $testRoot | Out-Null
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'lessons') -Destination $testRoot -Recurse
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'final-project') -Destination $testRoot -Recurse
+
+    foreach ($script in $scripts) {
+        $relativePath = $script.FullName.Substring($repoRoot.Length + 1)
+        $isolatedPath = Join-Path $testRoot $relativePath
+        Write-Host "Testing $relativePath" -ForegroundColor Cyan
+        try {
+            & $isolatedPath *> $null
+            if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
+                throw "Exited with code $LASTEXITCODE"
+            }
+        }
+        catch {
+            $failures.Add("$($script.FullName): $($_.Exception.Message)")
         }
     }
-    catch {
-        $failures.Add("$($script.FullName): $($_.Exception.Message)")
-    }
+}
+finally {
+    Remove-Item -LiteralPath $testRoot -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 if ($failures.Count -gt 0) {

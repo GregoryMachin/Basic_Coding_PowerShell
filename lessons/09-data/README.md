@@ -10,7 +10,7 @@
 |---:|---|
 | 0–10 | Map JSON syntax to PowerShell values |
 | 10–22 | Navigate nested status data |
-| 22–32 | Filter, sort, and summarize |
+| 22–32 | Filter, sort, and summarise |
 | 32–45 | Dispatch-shortlist challenge |
 | 45–52 | Validate fields and freshness |
 | 52–58 | Bonus bite: GitHub collaboration |
@@ -82,11 +82,10 @@ You can navigate nested JSON, choose JSON versus CSV, explain `-Depth`, validate
 
 ## Bonus bite — GitHub collaboration
 
-An issue describes work; a pull request proposes a reviewable change. Use a focused branch, link the issue, explain tests, and review behavior rather than the person. Follow class policy before creating accounts or pushing data.
+An issue describes work; a pull request proposes a reviewable change. Use a focused branch, link the issue, explain tests, and review behaviour rather than the person. Follow class policy before creating accounts or pushing data.
 
 ## Exit ticket
 
 Why can syntactically valid JSON still be unsafe or unsuitable for a program?
 
 **Previous:** [Lesson 8](../08-errors/README.md) · **Next:** [Hero Command Centre](../10-command-centre/README.md)
-

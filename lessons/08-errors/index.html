@@ -1,0 +1,150 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Validation and useful error handling">
+  <title>Safe Operations | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a aria-current="page" class="active" href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 8 of 10</p><p>Validation and useful error handling</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Error-Handling.png"><img src="../../Images/Final%20images/PowerShell-Error-Handling.png" alt="PowerShell reference for Safe Operations"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-8-safe-operations">Lesson 8 — Safe Operations</h1>
+<p><strong>Mission:</strong> Make input and file operations fail safely and explain what went wrong. <strong>Learn:</strong> expected invalid input, <code>TryParse</code>, retry loops, exceptions, terminating errors, typed catches, <code>throw</code>, <code>finally</code>, and useful error records. <strong>Recharge:</strong> <code>if</code> handles anticipated states; <code>try</code>/<code>catch</code> handles operations that throw.</p>
+<h2 id="flight-plan">Flight plan</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–10</td>
+<td>Classify validation failures and exceptions</td>
+</tr>
+<tr>
+<td>10–22</td>
+<td>Parse input without throwing</td>
+</tr>
+<tr>
+<td>22–32</td>
+<td>Catch a failed file operation</td>
+</tr>
+<tr>
+<td>32–45</td>
+<td>Three-attempt signal challenge</td>
+</tr>
+<tr>
+<td>45–52</td>
+<td>Build and run a failure-test matrix</td>
+</tr>
+<tr>
+<td>52–58</td>
+<td>Bonus bite: conditional breakpoints</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Exit ticket</td>
+</tr>
+</tbody></table></div>
+<h2 id="two-kinds-of-failure">Two kinds of failure</h2>
+<p><strong>Expected invalid input</strong> is something the program can anticipate: blank input, a word where a number is required, or a value outside a range. Use parsing and conditions so the user can correct it.</p>
+<p><strong>An exception</strong> reports an operation that could not complete: a missing file, denied access, or malformed data. Use <code>try</code>/<code>catch</code> around the smallest operation that may throw.</p>
+<p>Programmer mistakes also produce errors, but catching everything is not a substitute for finding and fixing a bug.</p>
+<h2 id="parse-without-throwing">Parse without throwing</h2>
+<pre><code class="language-powershell">$answer = Read-Host &#39;Strength from 0 to 10&#39;
+$strength = 0
+$isNumber = [int]::TryParse($answer, [ref]$strength)</code></pre>
+<p><code>TryParse</code> returns a Boolean. <code>[ref]</code> lets the method place the parsed value into <code>$strength</code>. Check parsing first, then the allowed range.</p>
+<pre><code class="language-powershell">if (-not $isNumber) { Write-Warning &#39;Enter a whole number.&#39; }
+elseif ($strength -notin 0..10) { Write-Warning &#39;Use 0 through 10.&#39; }</code></pre>
+<h2 id="exceptions-and-error-action">Exceptions and error action</h2>
+<p>Some cmdlets report non-terminating errors and continue. <code>-ErrorAction Stop</code> turns that operation&#39;s error into one <code>catch</code> can handle:</p>
+<pre><code class="language-powershell">try {
+$data = Get-Content -LiteralPath $path -ErrorAction Stop
+}
+catch [System.Management.Automation.ItemNotFoundException] {
+Write-Warning &quot;File not found: $path&quot;
+}
+catch {
+Write-Warning &quot;Load failed: $($_.Exception.Message)&quot;
+}
+finally {
+Write-Verbose &#39;Load attempt finished&#39;
+}</code></pre>
+<p>A typed catch handles a known exception; the final generic catch handles others. <code>finally</code> runs whether the operation succeeds or fails, which is useful for cleanup. <code>throw</code> creates or rethrows a terminating error when the caller cannot safely continue.</p>
+<p>Avoid hiding every error with <code>SilentlyContinue</code>. A useful message says what failed, where, and what the user can do.</p>
+<h2 id="guided-build">Guided build</h2>
+<p>Run <code>examples/safe-dispatcher.ps1</code>. Add <code>$_.Exception.GetType().Name</code> inside <code>catch</code>, then compare the missing-file failure with a valid file.</p>
+<h2 id="challenge-three-attempt-signal-reader">Challenge — Three-attempt signal reader</h2>
+<p><strong>Core:</strong> implement <code>TryParse</code>, range checking, and a clear message for each invalid case. <strong>Power-up:</strong> place it in <code>Read-SignalStrength</code> and allow three attempts with <code>while</code>. <strong>Power-up:</strong> return the valid number; throw a clear error after all attempts fail. <strong>Mission specialist:</strong> catch that error in a caller and choose a safe default. <strong>Team-up:</strong> run a failure matrix while recording expected and actual messages.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Input</th>
+<th>Expected</th>
+</tr></thead><tbody>
+<tr>
+<td>blank</td>
+<td>whole-number message</td>
+</tr>
+<tr>
+<td><code>fast</code></td>
+<td>whole-number message</td>
+</tr>
+<tr>
+<td><code>-1</code></td>
+<td>range message</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td>accepted boundary</td>
+</tr>
+<tr>
+<td><code>10</code></td>
+<td>accepted boundary</td>
+</tr>
+<tr>
+<td><code>11</code></td>
+<td>range message</td>
+</tr>
+</tbody></table></div>
+<p>The interactive solution includes the retry loop. <code>solution/validate-strength.ps1</code> remains parameterized for repeatable automated checks, and <code>solution/safe-loader.ps1</code> demonstrates exceptions and fallback data.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>You can distinguish validation from an exception, explain <code>[ref]</code>, make a cmdlet error terminating, inspect an error record, and decide where retry belongs.</p>
+<h2 id="bonus-bite-conditional-breakpoint">Bonus bite — Conditional breakpoint</h2>
+<p>Set a breakpoint inside the retry loop and give it condition <code>$attempt -eq 3</code>. Debugging lets you observe state; it does not repair the program automatically.</p>
+<h2 id="exit-ticket">Exit ticket</h2>
+<p>Why is a non-numeric answer usually validation, while a missing required file is usually handled as an exception?</p>
+<p><strong>Previous:</strong> <a href="../07-files/index.html">Lesson 7</a> &#183; <strong>Next:</strong> <a href="../09-data/index.html">City Data Network</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>

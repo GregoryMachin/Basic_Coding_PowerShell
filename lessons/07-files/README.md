@@ -1,7 +1,7 @@
 # Lesson 7 — Clue Files
 
 **Mission:** Persist, inspect, analyse, and verify city sensor readings.<br>
-**Learn:** text and CSV files, safe paths, schemas, importing/exporting, encoding, overwrite/append behavior, and round trips.<br>
+**Learn:** text and CSV files, safe paths, schemas, importing/exporting, encoding, overwrite/append behaviour, and round trips.<br>
 **Recharge:** an object has properties; a CSV row becomes a PowerShell object.
 
 ## Flight plan
@@ -98,4 +98,3 @@ Review generated files before committing and keep private data out of Git.
 Why should a program re-import an exported report during testing?
 
 **Previous:** [Lesson 6](../06-functions/README.md) · **Next:** [Safe Operations](../08-errors/README.md)
-

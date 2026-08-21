@@ -7,7 +7,7 @@ $roster = @(
 
 $ranked = $roster |
     Where-Object { $_.Level -ge 3 -and $_.Available } |
-    Sort-Object Level, Name -Descending
+    Sort-Object @{ Expression = 'Level'; Descending = $true }, Name
 $lead = $ranked | Select-Object -First 1
 
 $ranked | Select-Object Name, Skill, Level, Available,

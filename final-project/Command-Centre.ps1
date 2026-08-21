@@ -41,9 +41,12 @@ while ($running) {
                 Write-Host 'Risk must be a whole number from 0 to 5.' -ForegroundColor Yellow
                 continue
             }
-            $status = (Read-Host 'Status: Monitoring, Active, or Complete').Trim()
-            if ($status -notin @('Monitoring', 'Active', 'Complete')) {
-                Write-Host 'Use Monitoring, Active, or Complete exactly.' -ForegroundColor Yellow
+            $statusText = (Read-Host 'Status: Monitoring, Active, or Complete').Trim()
+            $status = @('Monitoring', 'Active', 'Complete') |
+                Where-Object { $_ -eq $statusText } |
+                Select-Object -First 1
+            if ($null -eq $status) {
+                Write-Host 'Use Monitoring, Active, or Complete.' -ForegroundColor Yellow
                 continue
             }
             $lead = (Read-Host 'Original hero lead name').Trim()
@@ -75,4 +78,3 @@ while ($running) {
 }
 
 Write-Host 'Command centre closed. Keep the signal clear!'
-

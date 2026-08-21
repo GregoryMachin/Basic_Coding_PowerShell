@@ -1,0 +1,270 @@
+﻿<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Plan, combine, test, and explain">
+  <title>Hero Command Centre | Signal Academy</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <a class="skip-link" href="#lesson-content">Skip to lesson</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span>PS&gt;</span> Signal Academy</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="course-nav">Lessons</button>
+    <nav class="utility-nav" aria-label="Course links">
+      <a href="../../setup.html">Setup</a>
+      <a href="../../references.html">Visual references</a>
+    </nav>
+  </header>
+  <div class="course-layout">
+    <aside class="course-nav" id="course-nav" aria-label="Course lessons">
+      <p class="eyebrow">Your training path</p>
+      <a href="../../lessons/01-welcome/index.html"><span>01</span>Welcome to Signal Academy</a>
+<a href="../../lessons/02-calculations/index.html"><span>02</span>Power-Up Calculations</a>
+<a href="../../lessons/03-decisions/index.html"><span>03</span>Mission Decisions</a>
+<a href="../../lessons/04-loops/index.html"><span>04</span>Patrol Patterns</a>
+<a href="../../lessons/05-collections/index.html"><span>05</span>Team Rosters</a>
+<a href="../../lessons/06-functions/index.html"><span>06</span>Reusable Mission Tools</a>
+<a href="../../lessons/07-files/index.html"><span>07</span>Clue Files</a>
+<a href="../../lessons/08-errors/index.html"><span>08</span>Safe Operations</a>
+<a href="../../lessons/09-data/index.html"><span>09</span>City Data Network</a>
+<a aria-current="page" class="active" href="../../lessons/10-command-centre/index.html"><span>10</span>Hero Command Centre</a>
+    </aside>
+    <main id="lesson-content" class="content-shell">
+      <section class="lesson-banner">
+  <div><p class="eyebrow">Lesson 10 of 10</p><p>Plan, combine, test, and explain</p></div>
+  <a href="../../Images/Final%20images/PowerShell-Cheat-Sheet-A1.png"><img src="../../Images/Final%20images/PowerShell-Cheat-Sheet-A1.png" alt="PowerShell reference for Hero Command Centre"><span>Open reference image &nearr;</span></a>
+</section>
+      <article class="lesson-content">
+        <h1 id="lesson-10-hero-command-centre">Lesson 10 — Hero Command Centre</h1>
+<p><strong>Mission:</strong> Plan, complete, test, and explain an interactive command-centre program. <strong>Learn:</strong> decomposition, integration, separation of concerns, persistence, iterative delivery, testing, and reflection. <strong>Recharge:</strong> every feature should connect to a concept practised in Lessons 1–9.</p>
+<h2 id="a-realistic-60-minute-capstone">A realistic 60-minute capstone</h2>
+<p>Finishing a smaller reliable level is success. Students should complete levels in order rather than attempting every possible feature.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Minutes</th>
+<th>Activity</th>
+</tr></thead><tbody>
+<tr>
+<td>0–8</td>
+<td>Choose a user and sketch one useful workflow</td>
+</tr>
+<tr>
+<td>8–15</td>
+<td>Run the scaffold and map its parts to earlier lessons</td>
+</tr>
+<tr>
+<td>15–32</td>
+<td>Complete the <strong>Ready</strong> level</td>
+</tr>
+<tr>
+<td>32–44</td>
+<td>Attempt the <strong>Operational</strong> level</td>
+</tr>
+<tr>
+<td>44–52</td>
+<td>Test normal, boundary, and invalid paths</td>
+</tr>
+<tr>
+<td>52–56</td>
+<td>Pair review and improve one behaviour/message</td>
+</tr>
+<tr>
+<td>56–58</td>
+<td>Publish bonus</td>
+</tr>
+<tr>
+<td>58–60</td>
+<td>Demo and reflection</td>
+</tr>
+</tbody></table></div>
+<p>The project can extend into a second session for persistence internals, hardening, or specialist features.</p>
+<h2 id="design-before-code">Design before code</h2>
+<p>Complete:</p>
+<ul>
+<li>My user is ...</li>
+<li>They need to ...</li>
+<li>My smallest useful version can ...</li>
+<li>It receives ... and produces ...</li>
+<li>One thing that could go wrong is ...</li>
+<li>I will know it works when ...</li>
+</ul>
+<h2 id="concept-map">Concept map</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Course concept</th>
+<th>Command-centre use</th>
+</tr></thead><tbody>
+<tr>
+<td>Variables/input</td>
+<td>menu choice and mission details</td>
+</tr>
+<tr>
+<td>Calculations</td>
+<td>summary counts and readiness score</td>
+</tr>
+<tr>
+<td>Decisions</td>
+<td>validation and menu routing</td>
+</tr>
+<tr>
+<td>Loops</td>
+<td>keep showing the menu</td>
+</tr>
+<tr>
+<td>Collections/objects</td>
+<td>mission records</td>
+</tr>
+<tr>
+<td>Functions</td>
+<td>view, summarise, create, load, save</td>
+</tr>
+<tr>
+<td>Files</td>
+<td>persistent CSV log</td>
+</tr>
+<tr>
+<td>Error handling</td>
+<td>safe load/save and invalid input</td>
+</tr>
+<tr>
+<td>JSON</td>
+<td>optional export</td>
+</tr>
+</tbody></table></div>
+<h2 id="program-architecture">Program architecture</h2>
+<p>The completed reference separates three responsibilities:</p>
+<pre><code class="language-text">Interface (prompts/menu)
+↓ calls
+Logic (create, summarise, identify)
+↓ reads/writes
+Storage (CSV or optional JSON)</code></pre>
+<p>Keeping these concerns separate makes logic easier to test without typing through the menu. The reference dot-sources <code>CommandCentre.Core.ps1</code>; dot-sourcing loads its function definitions into the current script:</p>
+<pre><code class="language-powershell">. (Join-Path $PSScriptRoot &#39;CommandCentre.Core.ps1&#39;)</code></pre>
+<p>The starter keeps more code together so students can enter at a familiar level, while providing working load/save scaffolding.</p>
+<h2 id="run-the-starter">Run the starter</h2>
+<pre><code class="language-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\final-project\starter.ps1</code></pre>
+<p>The first run copies versioned seed data to the ignored <code>mission-log.csv</code>. Experiments therefore leave the original seed intact.</p>
+<h2 id="completion-levels">Completion levels</h2>
+<h3 id="1-ready-expected-one-hour-core">1. Ready — expected one-hour core</h3>
+<ul>
+<li>Complete <code>Show-Missions</code> so records are sorted and displayed.</li>
+<li>Complete <code>Get-MissionSummary</code> so total, active, and high-risk counts are correct.</li>
+<li>Confirm the menu repeats and quits.</li>
+<li>Run the supplied manual tests.</li>
+</ul>
+<h3 id="2-operational-interactive-creation">2. Operational — interactive creation</h3>
+<ul>
+<li>Ask for zone, risk, status, and lead.</li>
+<li>Validate risk with <code>TryParse</code> and range 0–5.</li>
+<li>Reject blank zone/lead and unknown status.</li>
+<li>Create a consistent object and add it to the collection.</li>
+<li>Confirm it appears in view and summary.</li>
+</ul>
+<h3 id="3-persistent-data-survives-restart">3. Persistent — data survives restart</h3>
+<ul>
+<li>Trace the supplied import and export scaffold.</li>
+<li>Add a mission, quit, reopen, and confirm it remains.</li>
+<li>Explain why seed and working-log files are separate.</li>
+</ul>
+<h3 id="4-hardened-failures-are-safe">4. Hardened — failures are safe</h3>
+<ul>
+<li>Catch missing/malformed data with an actionable message.</li>
+<li>Permit retry instead of abandoning a partially entered mission.</li>
+<li>Verify a save by re-importing it.</li>
+<li>Consider writing to a temporary file before replacing the live log.</li>
+</ul>
+<h3 id="5-specialist-choose-one">5. Specialist — choose one</h3>
+<ul>
+<li>Search by zone, lead, status, or minimum risk.</li>
+<li>Edit or close a mission.</li>
+<li>Delete only after confirmation.</li>
+<li>Export a nested JSON dashboard.</li>
+<li>Calculate readiness or status statistics.</li>
+<li>Add an automated test for a new logic function.</li>
+</ul>
+<h2 id="menu-and-switch">Menu and <code>switch</code></h2>
+<p>The menu&#39;s <code>while</code> loop repeats until <code>$running</code> becomes false. <code>switch</code> compares one value against several labelled cases and is clearer here than a long chain of equality checks:</p>
+<pre><code class="language-powershell">switch ($choice.ToUpper()) {
+&#39;1&#39; { Show-Missions $missions }
+&#39;Q&#39; { $running = $false }
+default { Write-Warning &#39;Choose a listed option.&#39; }
+}</code></pre>
+<p><code>continue</code> starts the next menu iteration after invalid feature input.</p>
+<h2 id="manual-test-record">Manual test record</h2>
+<p>Record actual output as well as pass/fail.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Test</th>
+<th>Input</th>
+<th>Expected</th>
+</tr></thead><tbody>
+<tr>
+<td>View</td>
+<td><code>1</code></td>
+<td>all records sorted</td>
+</tr>
+<tr>
+<td>Summary</td>
+<td><code>3</code></td>
+<td>counts match visible data</td>
+</tr>
+<tr>
+<td>Add normal</td>
+<td>valid mission</td>
+<td>new consistent record</td>
+</tr>
+<tr>
+<td>Risk boundaries</td>
+<td><code>0</code>, <code>5</code></td>
+<td>accepted</td>
+</tr>
+<tr>
+<td>Risk invalid</td>
+<td>word, <code>-1</code>, <code>6</code></td>
+<td>message; app continues</td>
+</tr>
+<tr>
+<td>Blank zone</td>
+<td>spaces</td>
+<td>rejected</td>
+</tr>
+<tr>
+<td>Unknown menu</td>
+<td><code>X</code></td>
+<td>menu guidance; app continues</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>add, quit, restart</td>
+<td>record remains</td>
+</tr>
+<tr>
+<td>Quit</td>
+<td><code>Q</code></td>
+<td>save and friendly close</td>
+</tr>
+</tbody></table></div>
+<p>The completed reference includes lightweight automated tests in <code>final-project/tests</code>. Its <code>Assert-Equal</code> helper throws when actual behaviour differs from expected behaviour.</p>
+<h2 id="reading-the-completed-reference">Reading the completed reference</h2>
+<p>Some reference constructs are ceiling material:</p>
+<ul>
+<li><code>[Parameter(Mandatory)]</code> and <code>[ValidateSet()]</code> declare function contracts.</li>
+<li>regex <code>^M(\d+)$</code> and <code>$Matches</code> extract the numeric portion of an ID.</li>
+<li><code>$ErrorActionPreference = &#39;Stop&#39;</code> makes uncaught operation errors terminating in that script.</li>
+<li>dot-sourcing separates reusable logic from the interactive interface.</li>
+<li>temporary test paths and GUIDs keep automated tests isolated.</li>
+</ul>
+<p>Students do not need to reproduce every construct to complete the Ready or Operational levels.</p>
+<h2 id="review-and-rubric">Review and rubric</h2>
+<p>Use 20 points: correct behaviour 8, appropriate concepts 5, clarity 3, testing 2, explanation/demo 2. Prefer a small dependable application the author understands over a large copied application.</p>
+<h2 id="bonus-bite-publish-responsibly">Bonus bite — Publish responsibly</h2>
+<p>Review <code>git diff</code>, run <code>scripts/Test-Course.ps1</code>, and check for secrets/private data. If class policy allows, commit on a focused branch and open a pull request explaining behaviour and tests.</p>
+<h2 id="final-reflection">Final reflection</h2>
+<p>Explain one design choice, one bug you investigated, one test that changed your thinking, and one feature you would build next.</p>
+<p><strong>Previous:</strong> <a href="../09-data/index.html">Lesson 9</a> &#183; <strong>Course home:</strong> <a href="../../index.html">README</a></p>
+      </article>
+    </main>
+  </div>
+  <footer><span>PS&gt;</span> Learn clearly. Test safely. Help your city.</footer>
+  <script src="../../assets/course.js"></script>
+</body>
+</html>
