@@ -63,7 +63,7 @@ tr:last-child td { border-bottom: 0; }
 .lesson-banner { display: grid; grid-template-columns: 1fr 10rem; gap: 1.4rem; align-items: center; margin-bottom: 2.2rem; padding: 1.2rem; border: 1px solid var(--line); border-radius: .8rem; background: linear-gradient(135deg, var(--panel), #0c2540); }
 .lesson-banner p:last-child { margin-bottom: 0; font-size: 1.08rem; }
 .lesson-banner a { text-decoration: none; font-size: .8rem; font-weight: 800; }
-.lesson-banner img { aspect-ratio: 3 / 2; width: 100%; object-fit: cover; object-position: top; border-radius: .35rem; }
+.lesson-banner img { width: 100%; height: 14rem; padding: .3rem; object-fit: contain; object-position: center; border-radius: .35rem; background: #050b14; }
 
 .hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, .85fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; padding: 2rem 0 5rem; }
 .hero h1 { font-size: clamp(3.2rem, 8vw, 7rem); }
@@ -107,6 +107,7 @@ footer { padding: 2rem; color: var(--muted); text-align: center; border-top: 1px
   .lesson-grid, .steps, .reference-grid { grid-template-columns: 1fr; }
   .lesson-banner { grid-template-columns: 1fr; }
   .lesson-banner a { max-width: 16rem; }
+  .lesson-banner img { height: 20rem; }
   h1 { font-size: 2.5rem; }
 }
 
